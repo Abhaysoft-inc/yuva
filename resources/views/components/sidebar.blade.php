@@ -114,6 +114,14 @@
                     <span class="font-medium text-sm">GALLERY</span>
                 </a>
 
+                {{-- Donations --}}
+                <a href="{{ route('donations.index') }}" @click="sidebarOpen = false" class="flex items-center px-4 py-3 text-white hover:bg-blue-700 rounded-lg transition {{ request()->routeIs('donations.*') ? 'bg-blue-700' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-medium text-sm">DONATIONS</span>
+                </a>
+
                 {{-- Divider --}}
                 <div class="border-t border-blue-600 my-2"></div>
 
@@ -212,6 +220,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <span class="font-medium text-sm">GALLERY</span>
+                </a>
+
+                {{-- Donations --}}
+                <a href="{{ route('donations.index') }}" class="flex items-center px-4 py-3 text-white hover:bg-blue-700 rounded-lg transition {{ request()->routeIs('donations.*') ? 'bg-blue-700' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-medium text-sm">DONATIONS</span>
                 </a>
 
                 {{-- Divider --}}

@@ -13,6 +13,32 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
+            $table->string('donor_name');
+            $table->string('email');
+            $table->string('phone');
+            $table->decimal('amount', 10, 2);
+            $table->string('pan_number')->nullable();
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('pincode')->nullable();
+            $table->text('message')->nullable();
+
+            // Payment gateway fields
+            $table->string('payment_id')->nullable()->unique();
+            $table->string('razorpay_order_id')->nullable();
+            $table->string('razorpay_payment_id')->nullable();
+            $table->string('razorpay_signature')->nullable();
+
+            // Status and tracking
+            $table->enum('status', ['pending', 'completed', 'failed', 'refunded'])->default('pending');
+            $table->string('payment_method')->nullable();
+            $table->timestamp('paid_at')->nullable();
+
+            // Receipt
+            $table->string('receipt_number')->nullable()->unique();
+            $table->boolean('receipt_sent')->default(false);
+
             $table->timestamps();
         });
     }

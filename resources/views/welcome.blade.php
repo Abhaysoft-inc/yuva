@@ -449,7 +449,7 @@
             </div>
             
             @if($galleryImages->count() > 0)
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 @foreach($galleryImages as $image)
                 <div class="group relative aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
                      onclick="openLightbox('{{ asset('storage/' . $image->image_path) }}', '{{ $image->title }}', '{{ $image->description }}')">
@@ -477,6 +477,16 @@
                     </div>
                 </div>
                 @endforeach
+            </div>
+
+            {{-- View All Button --}}
+            <div class="text-center mt-10">
+                <a href="{{ route('gallery.public') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition text-lg">
+                    View All Gallery
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
             </div>
             @else
             {{-- No Gallery Images Message --}}
@@ -570,7 +580,10 @@
                 <div>
                     <h4 class="font-semibold text-black mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#about" class="hover:text-orange-400 transition">About Us</a></li>
+                        <li><a href="{{ url('/') }}" class="hover:text-orange-400 transition">Home</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-orange-400 transition">About Us</a></li>
+                        <li><a href="{{ route('contact') }}" class="hover:text-orange-400 transition">Contact Us</a></li>
+                        <li><a href="{{ route('gallery.public') }}" class="hover:text-orange-400 transition">Gallery</a></li>
                         @if (Route::has('login'))
                             <li><a href="{{ route('login') }}" class="hover:text-orange-400 transition">Login</a></li>
                         @endif

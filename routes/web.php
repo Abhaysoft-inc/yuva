@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\SlideController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\DonationController;
 use App\Models\SHG;
 use App\Models\Member;
 use App\Models\Event;
@@ -19,9 +20,32 @@ Route::get('/', function () {
     $upcomingEvents = Event::upcoming()->take(3)->get();
     $slides = Slide::where('is_active', true)->orderBy('order')->get();
     $directors = Director::where('is_active', true)->orderBy('order')->get();
-    $galleryImages = Gallery::where('is_active', true)->orderBy('order')->take(12)->get();
+    $galleryImages = Gallery::where('is_active', true)->orderBy('order')->take(6)->get();
     return view('welcome', compact('upcomingEvents', 'slides', 'directors', 'galleryImages'));
 });
+
+// Public gallery page
+Route::get('/photos', function () {
+    $galleryImages = Gallery::where('is_active', true)->orderBy('order')->get();
+    return view('gallery.public', compact('galleryImages'));
+})->name('gallery.public');
+
+// About Us page
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+// Contact Us page
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+// Public donation routes
+Route::get('/donate', [DonationController::class, 'showDonationForm'])->name('donate');
+Route::post('/donate/initiate', [DonationController::class, 'initiatePayment'])->name('donation.initiate');
+Route::post('/donate/verify', [DonationController::class, 'verifyPayment'])->name('donation.verify');
+Route::get('/donate/success/{id}', [DonationController::class, 'success'])->name('donation.success');
+Route::get('/donate/failed', [DonationController::class, 'failed'])->name('donation.failed');
 
 // Public member application form
 Route::get('/apply', [MemberController::class, 'showApplicationForm'])->name('apply');
@@ -61,6 +85,10 @@ Route::middleware('auth')->group(function () {
 
     // Slides management
     Route::resource('slides', SlideController::class);
+    // Donations management (Admin)
+    Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
+    Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+
 
     // Directors management
     Route::resource('directors', DirectorController::class);

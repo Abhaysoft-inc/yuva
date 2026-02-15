@@ -60,7 +60,7 @@
                     </a>
                     
                     {{-- Donate --}}
-                    <a href="{{ url('/#donate') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
+                    <a href="{{ route('donate') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
                         Donate
                     </a>
                     
@@ -70,23 +70,18 @@
                     </a>
                     
                     {{-- Gallery --}}
-                    <a href="{{ url('/#gallery') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
+                    <a href="{{ route('gallery.public') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
                         Gallery
                     </a>
                     
-                    {{-- Contact Us --}}
-                    <a href="{{ url('/#contact') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
-                        Contact Us
-                    </a>
-                    
                     {{-- About Us --}}
-                    <a href="{{ url('/#about') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
+                    <a href="{{ route('about') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
                         About Us
                     </a>
                     
-                    {{-- Important Links --}}
-                    <a href="{{ url('/#links') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
-                        Important Links
+                    {{-- Contact Us --}}
+                    <a href="{{ route('contact') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
+                        Contact Us
                     </a>
                     
                     {{-- Login --}}
