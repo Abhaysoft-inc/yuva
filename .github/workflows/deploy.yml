@@ -34,10 +34,9 @@ jobs:
 
       - name: Setup SSH key
         run: |
-          mkdir -p ~/.ssh
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p 65002 89.117.157.133 >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -p 65002 89.117.157.133 >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Create deployment archive
         run: |
