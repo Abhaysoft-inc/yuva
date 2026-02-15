@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Gallery;
+use App\Models\Slide;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class GalleryController extends Controller
+class SlideController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $galleries = Gallery::orderBy('order')->orderBy('created_at', 'desc')->get();
-        return view('gallery.index', compact('galleries'));
+        $slides = Slide::orderBy('order')->get();
+        return view('slides.index', compact('slides'));
     }
 
     /**
@@ -22,7 +22,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        return view('gallery.create');
+        return view('slides.create');
     }
 
     /**
@@ -34,81 +34,79 @@ class GalleryController extends Controller
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'category' => 'required|string|max:255',
             'order' => 'required|integer',
             'is_active' => 'boolean'
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('gallery', 'public');
+            $imagePath = $request->file('image')->store('slides', 'public');
             $validated['image_path'] = $imagePath;
         }
 
         $validated['is_active'] = $request->has('is_active');
 
-        Gallery::create($validated);
+        Slide::create($validated);
 
-        return redirect()->route('gallery.index')->with('success', 'Image added to gallery successfully!');
+        return redirect()->route('slides.index')->with('success', 'Slide added successfully!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Gallery $gallery)
+    public function show(Slide $slide)
     {
-        return view('gallery.show', compact('gallery'));
+        return view('slides.show', compact('slide'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Gallery $gallery)
+    public function edit(Slide $slide)
     {
-        return view('gallery.edit', compact('gallery'));
+        return view('slides.edit', compact('slide'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Gallery $gallery)
+    public function update(Request $request, Slide $slide)
     {
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'category' => 'required|string|max:255',
             'order' => 'required|integer',
             'is_active' => 'boolean'
         ]);
 
         if ($request->hasFile('image')) {
             // Delete old image
-            if ($gallery->image_path) {
-                Storage::disk('public')->delete($gallery->image_path);
+            if ($slide->image_path) {
+                Storage::disk('public')->delete($slide->image_path);
             }
-            $imagePath = $request->file('image')->store('gallery', 'public');
+            $imagePath = $request->file('image')->store('slides', 'public');
             $validated['image_path'] = $imagePath;
         }
 
         $validated['is_active'] = $request->has('is_active');
 
-        $gallery->update($validated);
+        $slide->update($validated);
 
-        return redirect()->route('gallery.index')->with('success', 'Gallery image updated successfully!');
+        return redirect()->route('slides.index')->with('success', 'Slide updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Gallery $gallery)
+    public function destroy(Slide $slide)
     {
         // Delete image file
-        if ($gallery->image_path) {
-            Storage::disk('public')->delete($gallery->image_path);
+        if ($slide->image_path) {
+            Storage::disk('public')->delete($slide->image_path);
         }
 
-        $gallery->delete();
+        $slide->delete();
 
-        return redirect()->route('gallery.index')->with('success', 'Gallery image deleted successfully!');
+        return redirect()->route('slides.index')->with('success', 'Slide deleted successfully!');
     }
 }

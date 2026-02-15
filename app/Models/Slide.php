@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Gallery extends Model
+class Slide extends Model
 {
     protected $fillable = [
         'title',
         'description',
         'image_path',
-        'category',
         'order',
         'is_active'
     ];

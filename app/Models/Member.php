@@ -32,6 +32,7 @@ class Member extends Model
         'bank_passbook_doc',
 
         'status',
+        'verification_status',
         'valid_from',
         'valid_to',
     ];

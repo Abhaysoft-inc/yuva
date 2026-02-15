@@ -284,7 +284,7 @@
 
     <div class="print-controls">
         <button class="btn-print" onclick="window.print()">🖨️ Print ID Card</button>
-        <a href="{{ route('shgs.members.show', [$shg, $member]) }}" class="btn-back">← Back to Member</a>
+        <a href="{{ url('/') }}" class="btn-back">🏠 Home</a>
     </div>
 
     <div class="cards-container">

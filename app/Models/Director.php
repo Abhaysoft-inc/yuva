@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Gallery extends Model
+class Director extends Model
 {
     protected $fillable = [
+        'name',
         'title',
         'description',
-        'image_path',
-        'category',
+        'photo_path',
         'order',
         'is_active'
     ];
