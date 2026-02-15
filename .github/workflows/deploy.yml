@@ -85,7 +85,9 @@ jobs:
             # Run migrations
             php artisan migrate --force
 
-            # Clear and rebuild caches
+            # Clear and rebuild caches (order matters - clear first so public path resolves correctly)
+            php artisan config:clear
+            php artisan cache:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
