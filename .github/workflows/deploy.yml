@@ -1,0 +1,98 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 65002 89.117.157.133 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Create deployment archive
+        run: |
+          tar -czf deploy.tar.gz \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='.env' \
+            --exclude='public' \
+            --exclude='deploy.sh' \
+            --exclude='deploy.tar.gz' \
+            --exclude='public.tar.gz' \
+            .
+
+          tar -czf public.tar.gz -C public .
+
+      - name: Upload and extract on server
+        env:
+          REMOTE: u236674186@89.117.157.133
+          REMOTE_PATH: /home/u236674186/domains/dashboard.yuvamaitree.org.in
+        run: |
+          # Upload archives
+          scp -P 65002 -o StrictHostKeyChecking=no deploy.tar.gz public.tar.gz $REMOTE:$REMOTE_PATH/
+
+          # Extract and run post-deploy commands
+          ssh -p 65002 -o StrictHostKeyChecking=no $REMOTE << 'ENDSSH'
+            cd /home/u236674186/domains/dashboard.yuvamaitree.org.in
+
+            # Extract app files
+            tar -xzf deploy.tar.gz
+            rm deploy.tar.gz
+
+            # Extract public files into public_html
+            tar -xzf public.tar.gz -C public_html/
+            rm public.tar.gz
+
+            # Ensure storage symlink
+            if [ ! -L public_html/storage ]; then
+              rm -rf public_html/storage
+              ln -s /home/u236674186/domains/dashboard.yuvamaitree.org.in/storage/app/public public_html/storage
+            fi
+
+            # Run migrations
+            php artisan migrate --force
+
+            # Clear and rebuild caches
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # Set permissions
+            chmod -R 755 storage bootstrap/cache
+            chmod -R 775 storage/logs storage/framework
+          ENDSSH
+
+      - name: Deployment complete
+        run: echo "✅ Deployed to https://dashboard.yuvamaitree.org.in"
