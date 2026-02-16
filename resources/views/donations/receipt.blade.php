@@ -215,7 +215,16 @@
                 </div>
                 <div class="header-right">
                     <div class="logo-section">
-                        <div style="width: 90px; height: 90px; margin: 0 auto 3px; border: 2px solid #2d7a5e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; color: #2d7a5e;">YMF</div>
+                        @php
+                            $logoPng = public_path('images/logo.png');
+                            $logoWebp = public_path('images/logo.webp');
+                            $logoPath = file_exists($logoPng) ? $logoPng : (file_exists($logoWebp) ? $logoWebp : null);
+                        @endphp
+                        @if($logoPath)
+                            <img src="file://{{ str_replace('\\', '/', $logoPath) }}" alt="Yuva Maitree Foundation Logo" class="logo">
+                        @else
+                            <div style="width: 90px; height: 90px; margin: 0 auto 3px; border: 2px solid #2d7a5e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; color: #2d7a5e;">YMF</div>
+                        @endif
                         <div style="font-size: 10px; font-weight: bold; color: #2d7a5e; margin-top: 3px;">Yuva Maitree Foundation</div>
                         
                     </div>
@@ -319,7 +328,7 @@
                 <div class="signature-box" style="margin-left: 4%;">
                     <div class="box-title">FOR YUVA MAITREE FOUNDATION</div>
                     <div style="font-style: italic; font-size: 8px; margin-bottom: 3px;">For YUVA MAITREE FOUNDATION</div>
-                    <div class="signature-text">K. Subhashini</div>
+                    <div class="signature-text">Asfaq Ansari</div>
                     <div class="signature-label">AUTHORIZED SIGNATORY</div>
                 </div>
             </div>
