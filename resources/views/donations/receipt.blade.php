@@ -215,9 +215,7 @@
                 </div>
                 <div class="header-right">
                     <div class="logo-section">
-                        @if(file_exists(public_path('images/logo.webp')))
-                        <img src="{{ public_path('images/logo.webp') }}" alt="YMF Logo" class="logo">
-                        @endif
+                        <div style="width: 90px; height: 90px; margin: 0 auto 3px; border: 2px solid #2d7a5e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; color: #2d7a5e;">YMF</div>
                         <div style="font-size: 10px; font-weight: bold; color: #2d7a5e; margin-top: 3px;">Yuva Maitree Foundation</div>
                         
                     </div>
