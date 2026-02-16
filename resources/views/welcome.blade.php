@@ -247,29 +247,7 @@
     </section>
     @endif
 
-    {{-- Stats Bar --}}
-    <section class="bg-[#1b6a3c]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
-                <div>
-                    <p class="text-3xl sm:text-4xl font-extrabold">50+</p>
-                    <p class="text-orange-100 text-sm mt-1">Self Help Groups</p>
-                </div>
-                <div>
-                    <p class="text-3xl sm:text-4xl font-extrabold">500+</p>
-                    <p class="text-orange-100 text-sm mt-1">Members</p>
-                </div>
-                <div>
-                    <p class="text-3xl sm:text-4xl font-extrabold">20+</p>
-                    <p class="text-orange-100 text-sm mt-1">Villages Covered</p>
-                </div>
-                <div>
-                    <p class="text-3xl sm:text-4xl font-extrabold">5+</p>
-                    <p class="text-orange-100 text-sm mt-1">Years of Service</p>
-                </div>
-            </div>
-        </div>
-    </section>
+   
 
     {{-- About Section --}}
     <section id="about" class="py-16 sm:py-20">
