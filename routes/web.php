@@ -45,6 +45,7 @@ Route::get('/contact', function () {
 Route::get('/donate', [DonationController::class, 'showDonationForm'])->name('donate');
 Route::post('/donate/initiate', [DonationController::class, 'initiatePayment'])->name('donation.initiate');
 Route::post('/donate/verify', [DonationController::class, 'verifyPayment'])->name('donation.verify');
+Route::post('/donate/mark-failed/{id}', [DonationController::class, 'markAsFailed'])->name('donation.markFailed');
 Route::get('/donate/success/{id}', [DonationController::class, 'success'])->name('donation.success');
 Route::get('/donate/failed', [DonationController::class, 'failed'])->name('donation.failed');
 Route::get('/donate/receipt/{id}', [DonationController::class, 'downloadReceipt'])->name('donation.receipt');

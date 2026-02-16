@@ -213,6 +213,7 @@
                 }
 
                 // Initialize Razorpay
+                let paymentSuccessful = false;
                 const options = {
                     key: data.key,
                     amount: data.amount,
@@ -222,6 +223,7 @@
                     order_id: data.order_id,
                     handler: function(response) {
                         // Payment successful, verify on backend
+                        paymentSuccessful = true;
                         verifyPayment(response, data.donation_id);
                     },
                     prefill: {
@@ -234,6 +236,10 @@
                     },
                     modal: {
                         ondismiss: function() {
+                            // Mark donation as failed if payment wasn't successful
+                            if (!paymentSuccessful) {
+                                markDonationAsFailed(data.donation_id);
+                            }
                             submitBtn.disabled = false;
                             submitBtn.textContent = 'Proceed to Payment';
                         }
@@ -271,6 +277,20 @@
 
             } catch (error) {
                 alert('Payment verification failed. Please contact support with your payment ID: ' + payment.razorpay_payment_id);
+            }
+        }
+
+        async function markDonationAsFailed(donationId) {
+            try {
+                await fetch(`{{ url('/donate/mark-failed') }}/${donationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    }
+                });
+            } catch (error) {
+                console.error('Failed to mark donation as failed:', error);
             }
         }
     </script>

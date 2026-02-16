@@ -174,6 +174,26 @@ class DonationController extends Controller
     }
 
     /**
+     * Mark donation as failed (when user closes payment modal or payment fails)
+     */
+    public function markAsFailed($id)
+    {
+        try {
+            $donation = Donation::find($id);
+
+            if ($donation && $donation->status === 'pending') {
+                $donation->update(['status' => 'failed']);
+                return response()->json(['success' => true, 'message' => 'Donation marked as failed']);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Donation not found or already processed'], 404);
+        } catch (\Exception $e) {
+            Log::error('Failed to mark donation as failed: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'An error occurred'], 500);
+        }
+    }
+
+    /**
      * Admin: Display all donations
      */
     public function index(Request $request)
