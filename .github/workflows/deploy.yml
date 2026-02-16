@@ -81,6 +81,9 @@ jobs:
               ln -s /home/u236674186/domains/dashboard.yuvamaitree.org.in/storage/app/public public_html/storage
             fi
 
+            # Install composer dependencies on server
+            composer install --no-dev --optimize-autoloader
+
             # Run migrations
             php artisan migrate --force
 
