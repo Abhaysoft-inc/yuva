@@ -22,8 +22,11 @@ return new class extends Migration
             if (!Schema::hasColumn('donations', 'phone')) {
                 $table->string('phone')->nullable()->after('email');
             }
+            if (!Schema::hasColumn('donations', 'amount')) {
+                $table->decimal('amount', 10, 2)->default(0)->after('phone');
+            }
             if (!Schema::hasColumn('donations', 'pan_number')) {
-                $table->string('pan_number')->nullable()->after('phone');
+                $table->string('pan_number')->nullable()->after('amount');
             }
             if (!Schema::hasColumn('donations', 'address')) {
                 $table->text('address')->nullable()->after('pan_number');
@@ -91,6 +94,7 @@ return new class extends Migration
                 'donor_name',
                 'email',
                 'phone',
+                'amount',
                 'pan_number',
                 'address',
                 'city',
