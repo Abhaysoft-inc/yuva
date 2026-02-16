@@ -247,8 +247,6 @@
     </section>
     @endif
 
-   
-
     {{-- About Section --}}
     <section id="about" class="py-16 sm:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -532,58 +530,14 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Join Us in Making a Difference</h2>
             <p class="text-orange-100 text-lg mb-8">हमारे साथ जुड़ें और बदलाव लाएं</p>
-            @auth
-                <a href="{{ url('/dashboard') }}" class="inline-block px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-50 transition text-lg">
-                    Go to Dashboard
+           <a href="{{ url('/apply') }}" class="inline-block px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-50 transition text-lg">
+                    Become an Member
                 </a>
-            @else
-                <a href="{{ route('register') }}" class="inline-block px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-50 transition text-lg">
-                    Register Now
-                </a>
-            @endauth
         </div>
     </section>
 
     {{-- Footer --}}
-    <footer class="bg-white border-t-[#1b6a3c] text-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-16 w-auto">
-
-                    <p class="text-sm leading-relaxed">
-                        Working towards women empowerment and community development through Self Help Groups across rural India.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-black mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="{{ url('/') }}" class="hover:text-orange-400 transition">Home</a></li>
-                        <li><a href="{{ route('about') }}" class="hover:text-orange-400 transition">About Us</a></li>
-                        <li><a href="{{ route('contact') }}" class="hover:text-orange-400 transition">Contact Us</a></li>
-                        <li><a href="{{ route('gallery.public') }}" class="hover:text-orange-400 transition">Gallery</a></li>
-                        @if (Route::has('login'))
-                            <li><a href="{{ route('login') }}" class="hover:text-orange-400 transition">Login</a></li>
-                        @endif
-                        @if (Route::has('register'))
-                            <li><a href="{{ route('register') }}" class="hover:text-orange-400 transition">Register</a></li>
-                        @endif
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-black mb-4">Contact / संपर्क</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li>Email: info@yuvamaitree.org</li>
-                        <li>Phone: +91 XXXXX XXXXX</li>
-                        <li>Location: India</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-10 pt-6 text-center text-sm">
-                <p>&copy; {{ date('Y') }} Yuva Maitree Foundation. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <x-public-footer />
 
 </body>
 </html>

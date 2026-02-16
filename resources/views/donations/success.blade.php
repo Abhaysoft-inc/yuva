@@ -22,36 +22,36 @@
     <x-public-navbar />
 
     {{-- Success Message --}}
-    <section class="py-16 min-h-screen flex items-center justify-center">
-        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+    <section class="py-8 md:py-12 min-h-screen flex items-center justify-center">
+        <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 text-center">
                 {{-- Success Icon --}}
-                <div class="flex justify-center mb-6">
-                    <div class="rounded-full bg-green-100 p-6">
-                        <svg class="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex justify-center mb-4">
+                    <div class="rounded-full bg-green-100 p-4">
+                        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
                 </div>
 
                 {{-- Thank You Message --}}
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Thank You, {{ $donation->donor_name }}!</h1>
-                <p class="text-xl text-gray-600 mb-2">धन्यवाद</p>
-                <p class="text-lg text-gray-700 mb-8">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Thank You, {{ $donation->donor_name }}!</h1>
+                <p class="text-lg text-gray-600 mb-2">धन्यवाद</p>
+                <p class="text-base text-gray-700 mb-6">
                     Your generous donation has been received successfully. Your support makes a real difference in empowering communities.
                 </p>
 
                 {{-- Donation Details --}}
-                <div class="bg-gray-50 rounded-xl p-6 mb-8 text-left">
-                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Donation Details</h2>
-                    <div class="space-y-3">
+                <div class="bg-gray-50 rounded-xl p-4 mb-6 text-left">
+                    <h2 class="text-base font-semibold text-gray-900 mb-3">Donation Details</h2>
+                    <div class="space-y-2">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Receipt Number:</span>
                             <span class="font-semibold text-gray-900">{{ $donation->receipt_number }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Amount:</span>
-                            <span class="font-semibold text-green-600 text-xl">₹{{ number_format($donation->amount, 2) }}</span>
+                            <span class="font-semibold text-green-600 text-lg">₹{{ number_format($donation->amount, 2) }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Date:</span>
@@ -70,7 +70,7 @@
 
                 {{-- 80G Certificate Info --}}
                 @if($donation->pan_number)
-                <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-8">
+                <div class="bg-orange-50 border border-orange-200 rounded-xl p-3 mb-6">
                     <div class="flex items-start gap-3">
                         <svg class="w-6 h-6 text-orange-600 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -84,8 +84,8 @@
                 @endif
 
                 {{-- What's Next --}}
-                <div class="border-t border-gray-200 pt-6 mb-8">
-                    <h3 class="font-semibold text-gray-900 mb-4">What Happens Next?</h3>
+                <div class="border-t border-gray-200 pt-4 mb-6">
+                    <h3 class="font-semibold text-gray-900 mb-3">What Happens Next?</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div class="flex flex-col items-center">
                             <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
@@ -109,17 +109,23 @@
                 </div>
 
                 {{-- Action Buttons --}}
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ url('/') }}" class="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition">
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="{{ route('donation.receipt', $donation->id) }}" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition inline-flex items-center justify-center gap-2 text-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download Receipt
+                    </a>
+                    <a href="{{ url('/') }}" class="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition text-sm">
                         Return to Home
                     </a>
-                    <a href="{{ route('donate') }}" class="px-8 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-300 transition">
+                    <a href="{{ route('donate') }}" class="px-6 py-2.5 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-lg border-2 border-gray-300 transition text-sm">
                         Donate Again
                     </a>
                 </div>
 
                 {{-- Social Share --}}
-                <div class="mt-8 pt-6 border-t border-gray-200">
+                <div class="mt-6 pt-4 border-t border-gray-200">
                     <p class="text-sm text-gray-600 mb-3">Inspire others to contribute</p>
                     <div class="flex justify-center gap-2">
                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" 
@@ -141,37 +147,7 @@
     </section>
 
     {{-- Footer --}}
-    <footer class="bg-white border-t border-gray-200 text-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-16 w-auto mb-4">
-                    <p class="text-sm leading-relaxed">
-                        Working towards women empowerment and community development through Self Help Groups across rural India.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-black mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="{{ url('/') }}" class="hover:text-orange-500 transition">Home</a></li>
-                        <li><a href="{{ route('about') }}" class="hover:text-orange-500 transition">About Us</a></li>
-                        <li><a href="{{ route('contact') }}" class="hover:text-orange-500 transition">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-black mb-4">Contact / संपर्क</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li>Email: info@yuvamaitree.org</li>
-                        <li>Phone: +91 XXXXX XXXXX</li>
-                        <li>Location: India</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-200 mt-10 pt-6 text-center text-sm">
-                <p>&copy; {{ date('Y') }} Yuva Maitree Foundation. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <x-public-footer />
 
 </body>
 </html>

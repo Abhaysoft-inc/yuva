@@ -8,6 +8,7 @@ use App\Http\Controllers\SlideController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\StaffController;
 use App\Models\SHG;
 use App\Models\Member;
 use App\Models\Event;
@@ -46,6 +47,7 @@ Route::post('/donate/initiate', [DonationController::class, 'initiatePayment'])-
 Route::post('/donate/verify', [DonationController::class, 'verifyPayment'])->name('donation.verify');
 Route::get('/donate/success/{id}', [DonationController::class, 'success'])->name('donation.success');
 Route::get('/donate/failed', [DonationController::class, 'failed'])->name('donation.failed');
+Route::get('/donate/receipt/{id}', [DonationController::class, 'downloadReceipt'])->name('donation.receipt');
 
 // Public member application form
 Route::get('/apply', [MemberController::class, 'showApplicationForm'])->name('apply');
@@ -65,36 +67,46 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::resource('shgs', ShgController::class);
-    Route::resource('shgs.members', MemberController::class);
-    Route::get('shgs/{shg}/members/{member}/id-card', [MemberController::class, 'idCard'])->name('shgs.members.id-card');
-    Route::get('shgs/{shg}/members/{member}/membership-form', [MemberController::class, 'membershipForm'])->name('shgs.members.membership-form');
+    // Staff-only routes (SHG and SHG Members management)
+    Route::middleware('staff')->group(function () {
+        Route::resource('shgs', ShgController::class);
+        Route::resource('shgs.members', MemberController::class);
+        Route::get('shgs/{shg}/members/{member}/id-card', [MemberController::class, 'idCard'])->name('shgs.members.id-card');
+        Route::get('shgs/{shg}/members/{member}/membership-form', [MemberController::class, 'membershipForm'])->name('shgs.members.membership-form');
 
-    // Standalone member create (with SHG chooser)
-    Route::get('members/create', [MemberController::class, 'createStandalone'])->name('members.create');
-    Route::post('members', [MemberController::class, 'storeStandalone'])->name('members.store');
-    Route::get('members', [MemberController::class, 'indexAll'])->name('members.index');
+        // Standalone member create (with SHG chooser)
+        Route::get('members/create', [MemberController::class, 'createStandalone'])->name('members.create');
+        Route::post('members', [MemberController::class, 'storeStandalone'])->name('members.store');
+        Route::get('members', [MemberController::class, 'indexAll'])->name('members.index');
 
-    // Member verification routes
-    Route::get('members/unverified', [MemberController::class, 'unverified'])->name('members.unverified');
-    Route::post('members/{member}/verify', [MemberController::class, 'verify'])->name('members.verify');
-    Route::post('members/{member}/reject', [MemberController::class, 'reject'])->name('members.reject');
+        // Member verification routes
+        Route::get('members/unverified', [MemberController::class, 'unverified'])->name('members.unverified');
+        Route::post('members/{member}/verify', [MemberController::class, 'verify'])->name('members.verify');
+        Route::post('members/{member}/reject', [MemberController::class, 'reject'])->name('members.reject');
+    });
 
-    // Events management
-    Route::resource('events', EventController::class);
+    // Admin-only routes
+    Route::middleware('admin')->group(function () {
+        // Events management
+        Route::resource('events', EventController::class);
 
-    // Slides management
-    Route::resource('slides', SlideController::class);
-    // Donations management (Admin)
-    Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
-    Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+        // Slides management
+        Route::resource('slides', SlideController::class);
 
+        // Donations management
+        Route::get('donations', [DonationController::class, 'index'])->name('donations.index');
+        Route::get('donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
+        Route::post('donations/{donation}/send-receipt', [DonationController::class, 'sendReceipt'])->name('donations.sendReceipt');
 
-    // Directors management
-    Route::resource('directors', DirectorController::class);
+        // Directors management
+        Route::resource('directors', DirectorController::class);
 
-    // Gallery management
-    Route::resource('gallery', GalleryController::class);
+        // Gallery management
+        Route::resource('gallery', GalleryController::class);
+
+        // Staff management
+        Route::resource('staff', StaffController::class);
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

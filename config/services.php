@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'brevo' => [
+        'api_key' => env('BREVO_API_KEY'),
+        'sender_email' => env('MAIL_FROM_ADDRESS', 'info@yuvamaitree.org'),
+        'sender_name' => env('MAIL_FROM_NAME', 'Yuva Maitree Foundation'),
+    ],
+
 ];

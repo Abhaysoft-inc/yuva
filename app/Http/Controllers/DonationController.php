@@ -205,4 +205,70 @@ class DonationController extends Controller
     {
         return view('donations.show', compact('donation'));
     }
+
+    /**
+     * Download donation receipt as PDF
+     */
+    public function downloadReceipt($id)
+    {
+        $donation = Donation::findOrFail($id);
+
+        if ($donation->status !== 'completed') {
+            abort(404, 'Receipt not available for pending or failed donations.');
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('donations.receipt', compact('donation'));
+
+        // Sanitize filename by replacing / and \ with -
+        $filename = str_replace(['/', '\\'], '-', $donation->receipt_number);
+
+        return $pdf->download('donation-receipt-' . $filename . '.pdf');
+    }
+
+    /**
+     * Send donation receipt via email
+     */
+    public function sendReceipt(Donation $donation)
+    {
+        if ($donation->status !== 'completed') {
+            return redirect()->back()->with('error', 'Cannot send receipt for incomplete donations.');
+        }
+
+        if (!$donation->donor_email) {
+            return redirect()->back()->with('error', 'No email address available for this donation.');
+        }
+
+        try {
+            // Generate PDF receipt
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('donations.receipt', compact('donation'));
+            $pdfContent = base64_encode($pdf->output());
+            $filename = str_replace(['/', '\\'], '-', $donation->receipt_number) . '.pdf';
+
+            // Generate email HTML content
+            $emailHtml = view('emails.donation-receipt', compact('donation'))->render();
+
+            // Send via Brevo API
+            $brevoService = new \App\Services\BrevoService();
+            $result = $brevoService->sendEmailWithPdf(
+                $donation->donor_email,
+                $donation->donor_name,
+                'Donation Receipt - ' . $donation->receipt_number,
+                $emailHtml,
+                $pdfContent,
+                $filename
+            );
+
+            if ($result['success']) {
+                // Update receipt_sent flag
+                $donation->update(['receipt_sent' => true]);
+
+                return redirect()->back()->with('success', 'Receipt sent successfully to ' . $donation->donor_email);
+            } else {
+                throw new \Exception($result['error']);
+            }
+        } catch (\Exception $e) {
+            Log::error('Failed to send donation receipt: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to send receipt: ' . $e->getMessage());
+        }
+    }
 }

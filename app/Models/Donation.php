@@ -40,8 +40,9 @@ class Donation extends Model
     public static function generateReceiptNumber()
     {
         $year = date('Y');
-        $lastDonation = self::whereYear('created_at', $year)
-            ->whereNotNull('receipt_number')
+        $prefix = "YMF/DON/{$year}/";
+
+        $lastDonation = self::where('receipt_number', 'LIKE', $prefix . '%')
             ->orderBy('id', 'desc')
             ->first();
 
@@ -52,7 +53,7 @@ class Donation extends Model
             $newNumber = 1;
         }
 
-        return 'YMF/' . $year . '/' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+        return $prefix . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
     }
 
     /**

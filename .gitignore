@@ -22,3 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Python test files with credentials
+test_email.py
+*.pyc
+__pycache__/
