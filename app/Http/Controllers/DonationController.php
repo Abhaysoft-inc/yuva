@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Razorpay\Api\Api;
 
@@ -237,7 +238,10 @@ class DonationController extends Controller
             abort(404, 'Receipt not available for pending or failed donations.');
         }
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('donations.receipt', compact('donation'));
+        $qrCodeTargetUrl = route('donation.receipt', ['id' => $donation->id]);
+        $qrCodeDataUri = $this->generateQrCodeDataUri($qrCodeTargetUrl);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('donations.receipt', compact('donation', 'qrCodeDataUri', 'qrCodeTargetUrl'));
 
         // Sanitize filename by replacing / and \ with -
         $filename = str_replace(['/', '\\'], '-', $donation->receipt_number);
@@ -259,8 +263,11 @@ class DonationController extends Controller
         }
 
         try {
+            $qrCodeTargetUrl = route('donation.receipt', ['id' => $donation->id]);
+            $qrCodeDataUri = $this->generateQrCodeDataUri($qrCodeTargetUrl);
+
             // Generate PDF receipt
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('donations.receipt', compact('donation'));
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('donations.receipt', compact('donation', 'qrCodeDataUri', 'qrCodeTargetUrl'));
             $pdfContent = base64_encode($pdf->output());
             $filename = str_replace(['/', '\\'], '-', $donation->receipt_number) . '.pdf';
 
@@ -289,6 +296,40 @@ class DonationController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to send donation receipt: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to send receipt: ' . $e->getMessage());
+        }
+    }
+
+    private function generateQrCodeDataUri(string $data): ?string
+    {
+        try {
+            $response = Http::timeout(10)->get('https://api.qrserver.com/v1/create-qr-code/', [
+                'size' => '180x180',
+                'format' => 'png',
+                'margin' => 0,
+                'data' => $data,
+            ]);
+
+            if (! $response->successful()) {
+                Log::warning('QR generation failed with non-success response.', [
+                    'status' => $response->status(),
+                ]);
+                return null;
+            }
+
+            $contentType = $response->header('Content-Type', 'image/png');
+            if (strpos($contentType, 'image/') !== 0) {
+                Log::warning('QR generation returned unexpected content type.', [
+                    'content_type' => $contentType,
+                ]);
+                return null;
+            }
+
+            return 'data:' . $contentType . ';base64,' . base64_encode($response->body());
+        } catch (\Throwable $e) {
+            Log::warning('QR generation request failed.', [
+                'message' => $e->getMessage(),
+            ]);
+            return null;
         }
     }
 }

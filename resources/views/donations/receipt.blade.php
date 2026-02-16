@@ -320,9 +320,13 @@
                 <div class="qr-box">
                     <div class="box-title">Scan here for<br>E-Receipt</div>
                     <div style="height: 60px; display: flex; align-items: center; justify-content: center;">
-                        <div style="width: 60px; height: 60px; border: 1.5px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 7px; color: #999; text-align: center; padding: 3px;">
-                            QR Code<br>{{ $donation->receipt_number }}
-                        </div>
+                        @if(!empty($qrCodeDataUri))
+                            <img src="{{ $qrCodeDataUri }}" alt="E-Receipt QR Code" style="width: 60px; height: 60px;">
+                        @else
+                            <div style="width: 60px; height: 60px; border: 1.5px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 7px; color: #999; text-align: center; padding: 3px;">
+                                QR Code<br>{{ $donation->receipt_number }}
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="signature-box" style="margin-left: 4%;">
