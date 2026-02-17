@@ -78,7 +78,6 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                             <a href="{{ route('shgs.members.show', [$shg, $member]) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
-                                            <a href="{{ route('shgs.members.id-card', [$shg, $member]) }}" class="text-green-600 hover:text-green-900">ID Card</a>
                                             <a href="{{ route('shgs.members.membership-form', [$shg, $member]) }}" class="text-indigo-600 hover:text-indigo-900">Form</a>
                                             <a href="{{ route('shgs.members.edit', [$shg, $member]) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                                             <form action="{{ route('shgs.members.destroy', [$shg, $member]) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this member?')">

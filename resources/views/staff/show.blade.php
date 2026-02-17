@@ -90,14 +90,14 @@
                     {{-- Joined Date --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-1">Joined Date</label>
-                        <p class="text-lg text-gray-900">{{ $staff->created_at->format('F d, Y') }}</p>
+                        <p class="text-lg text-gray-900">{{ $staff->created_at->format('d/m/Y') }}</p>
                         <p class="text-sm text-gray-500 mt-1">{{ $staff->created_at->diffForHumans() }}</p>
                     </div>
 
                     {{-- Last Updated --}}
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-1">Last Updated</label>
-                        <p class="text-lg text-gray-900">{{ $staff->updated_at->format('F d, Y') }}</p>
+                        <p class="text-lg text-gray-900">{{ $staff->updated_at->format('d/m/Y') }}</p>
                         <p class="text-sm text-gray-500 mt-1">{{ $staff->updated_at->diffForHumans() }}</p>
                     </div>
                 </div>

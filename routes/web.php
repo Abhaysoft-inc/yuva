@@ -9,6 +9,7 @@ use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\DataManagementController;
 use App\Models\SHG;
 use App\Models\Member;
 use App\Models\Event;
@@ -84,6 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::get('members/unverified', [MemberController::class, 'unverified'])->name('members.unverified');
         Route::post('members/{member}/verify', [MemberController::class, 'verify'])->name('members.verify');
         Route::post('members/{member}/reject', [MemberController::class, 'reject'])->name('members.reject');
+
+        // CSV exports
+        Route::get('exports/members-csv', [DataManagementController::class, 'exportMembersCsv'])->name('exports.members.csv');
+        Route::get('exports/shgs-csv', [DataManagementController::class, 'exportShgsCsv'])->name('exports.shgs.csv');
     });
 
     // Admin-only routes
@@ -107,6 +112,11 @@ Route::middleware('auth')->group(function () {
 
         // Staff management
         Route::resource('staff', StaffController::class);
+
+        // Full exports / backup
+        Route::get('exports/all-csv', [DataManagementController::class, 'exportAllCsvZip'])->name('exports.all.csv');
+        Route::get('backup/all-data', [DataManagementController::class, 'backupAllData'])->name('backup.all-data');
+        Route::post('backup/restore', [DataManagementController::class, 'restoreBackup'])->name('backup.restore');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -108,7 +108,7 @@
                                 name="date_of_birth" 
                                 id="date_of_birth" 
                                 value="{{ old('date_of_birth') }}" 
-                                required 
+                                required
                                 max="{{ date('Y-m-d') }}"
                                 class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
                             >

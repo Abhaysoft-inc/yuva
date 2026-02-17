@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,12 +34,18 @@ class EventController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'event_date' => 'required|date',
+            'event_date' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'event_time' => 'nullable',
             'location' => 'nullable|string|max:255',
             'event_image' => 'nullable|image|max:2048',
             'status' => 'required|in:upcoming,completed,cancelled',
         ]);
+
+        $validated['event_date'] = $this->normalizeDateInput($validated['event_date']);
 
         if ($request->hasFile('event_image')) {
             $validated['event_image'] = $request->file('event_image')->store('events', 'public');
@@ -73,12 +80,18 @@ class EventController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'event_date' => 'required|date',
+            'event_date' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'event_time' => 'nullable',
             'location' => 'nullable|string|max:255',
             'event_image' => 'nullable|image|max:2048',
             'status' => 'required|in:upcoming,completed,cancelled',
         ]);
+
+        $validated['event_date'] = $this->normalizeDateInput($validated['event_date']);
 
         if ($request->hasFile('event_image')) {
             // Delete old image if exists
@@ -105,5 +118,34 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Event deleted successfully!');
+    }
+
+    private function isValidDateInput(?string $value): bool
+    {
+        if (empty($value)) {
+            return false;
+        }
+
+        foreach (['Y-m-d', 'd/m/Y'] as $format) {
+            try {
+                $date = Carbon::createFromFormat($format, $value);
+                if ($date && $date->format($format) === $value) {
+                    return true;
+                }
+            } catch (\Throwable) {
+                // Try next format
+            }
+        }
+
+        return false;
+    }
+
+    private function normalizeDateInput(string $value): string
+    {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) === 1) {
+            return Carbon::createFromFormat('Y-m-d', $value)->format('Y-m-d');
+        }
+
+        return Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
     }
 }

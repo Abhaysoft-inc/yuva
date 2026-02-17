@@ -7,6 +7,17 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             {{-- Stats Cards --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -88,7 +99,53 @@
                     </svg>
                     Manage Events
                 </a>
+                <a href="{{ route('exports.members.csv') }}" class="inline-flex items-center px-5 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow transition">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v10m0 0l-4-4m4 4l4-4M4 19h16" />
+                    </svg>
+                    Export Members CSV
+                </a>
+                <a href="{{ route('exports.shgs.csv') }}" class="inline-flex items-center px-5 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg shadow transition">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v10m0 0l-4-4m4 4l4-4M4 19h16" />
+                    </svg>
+                    Export SHGs CSV
+                </a>
+                @if(auth()->user()->isAdmin())
+                    <a href="{{ route('exports.all.csv') }}" class="inline-flex items-center px-5 py-3 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg shadow transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16" />
+                        </svg>
+                        Export All CSV (ZIP)
+                    </a>
+                    <a href="{{ route('backup.all-data') }}" class="inline-flex items-center px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg shadow transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16h10M7 12h10m-9 8h8a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Backup All Data
+                    </a>
+                @endif
             </div>
+
+            @if(auth()->user()->isAdmin())
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Restore From Backup</h3>
+                        <p class="text-sm text-gray-500 mt-1">Upload a backup JSON file created from this system. A pre-restore safety snapshot will be saved automatically.</p>
+
+                        <form action="{{ route('backup.restore') }}" method="POST" enctype="multipart/form-data" class="mt-4 flex flex-col md:flex-row gap-3 md:items-center" onsubmit="return confirm('This will overwrite current database data. Continue restore?')">
+                            @csrf
+                            <input type="file" name="backup_file" accept=".json,application/json,text/plain" required class="block w-full md:w-auto text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-2">
+                            <button type="submit" class="inline-flex items-center px-5 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow transition">
+                                Restore Backup
+                            </button>
+                        </form>
+                        @error('backup_file')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            @endif
 
         </div>
     </div>

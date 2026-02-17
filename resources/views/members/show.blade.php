@@ -10,10 +10,6 @@
                 &raquo; {{ $member->name }}
             </h2>
             <div class="flex gap-2">
-                <a href="{{ route('shgs.members.id-card', [$shg, $member]) }}"
-                   class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 transition ease-in-out duration-150">
-                    ID Card
-                </a>
                 <a href="{{ route('shgs.members.membership-form', [$shg, $member]) }}"
                    class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition ease-in-out duration-150">
                     Form

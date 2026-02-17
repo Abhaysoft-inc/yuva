@@ -70,7 +70,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
                                         <a href="{{ route('shgs.members.show', [$member->shg_id, $member->id]) }}" class="text-blue-600 hover:text-blue-900">View</a>
                                         <a href="{{ route('shgs.members.edit', [$member->shg_id, $member->id]) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        <a href="{{ route('shgs.members.id-card', [$member->shg_id, $member->id]) }}" class="text-green-600 hover:text-green-900">ID Card</a>
                                     </td>
                                 </tr>
                                 @endforeach

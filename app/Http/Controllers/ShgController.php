@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SHG;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ShgController extends Controller
@@ -33,7 +34,11 @@ class ShgController extends Controller
             'shg_name' => 'required|string|max:255',
             'shg_code' => 'nullable|string|max:255|unique:shgs,shg_code',
             'shg_contact' => 'nullable|string|max:15',
-            'date_of_formation' => 'nullable|date',
+            'date_of_formation' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'village' => 'nullable|string|max:255',
             'pincode' => 'nullable|string|max:10',
             'address' => 'nullable|string',
@@ -62,6 +67,8 @@ class ShgController extends Controller
             'declaration_accepted' => 'nullable|boolean',
             'signature' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
+
+        $validated['date_of_formation'] = $this->normalizeDateInput($validated['date_of_formation'] ?? null);
 
         // Handle file uploads
         if ($request->hasFile('meeting_proposal_document')) {
@@ -107,7 +114,11 @@ class ShgController extends Controller
             'shg_name' => 'required|string|max:255',
             'shg_code' => 'nullable|string|max:255|unique:shgs,shg_code,' . $shg->id,
             'shg_contact' => 'nullable|string|max:15',
-            'date_of_formation' => 'nullable|date',
+            'date_of_formation' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'village' => 'nullable|string|max:255',
             'pincode' => 'nullable|string|max:10',
             'address' => 'nullable|string',
@@ -137,6 +148,8 @@ class ShgController extends Controller
             'signature' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
+        $validated['date_of_formation'] = $this->normalizeDateInput($validated['date_of_formation'] ?? null);
+
         // Handle file uploads
         if ($request->hasFile('meeting_proposal_document')) {
             $validated['meeting_proposal_document'] = $request->file('meeting_proposal_document')->store('shg-documents', 'public');
@@ -162,5 +175,42 @@ class ShgController extends Controller
     {
         $shg->delete();
         return redirect()->route('shgs.index')->with('success', 'SHG deleted successfully!');
+    }
+
+    private function isValidDateInput(?string $value): bool
+    {
+        if (empty($value)) {
+            return true;
+        }
+
+        foreach (['Y-m-d', 'd/m/Y'] as $format) {
+            try {
+                $date = Carbon::createFromFormat($format, $value);
+                if ($date && $date->format($format) === $value) {
+                    return true;
+                }
+            } catch (\Throwable) {
+                // Try next format
+            }
+        }
+
+        return false;
+    }
+
+    private function normalizeDateInput(?string $value): ?string
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) === 1) {
+            return Carbon::createFromFormat('Y-m-d', $value)->format('Y-m-d');
+        }
+
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $value) === 1) {
+            return Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+        }
+
+        return null;
     }
 }

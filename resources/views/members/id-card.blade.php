@@ -327,12 +327,12 @@
                     <tr>
                         <td>Valid From</td>
                         <td>:</td>
-                        <td>{{ $member->valid_from ? $member->valid_from->format('d-M-Y') : '-' }}</td>
+                        <td>{{ $member->valid_from ? $member->valid_from->format('d/m/Y') : '-' }}</td>
                     </tr>
                     <tr>
                         <td>Valid To</td>
                         <td>:</td>
-                        <td>{{ $member->valid_to ? $member->valid_to->format('d-M-Y') : '-' }}</td>
+                        <td>{{ $member->valid_to ? $member->valid_to->format('d/m/Y') : '-' }}</td>
                     </tr>
                 </table>
             </div>
@@ -371,7 +371,7 @@
                     <tr>
                         <td>DOB</td>
                         <td>:</td>
-                        <td>{{ $member->date_of_birth ? $member->date_of_birth->format('d-M-Y') : '-' }}</td>
+                        <td>{{ $member->date_of_birth ? $member->date_of_birth->format('d/m/Y') : '-' }}</td>
                     </tr>
                     <tr>
                         <td>SHG</td>

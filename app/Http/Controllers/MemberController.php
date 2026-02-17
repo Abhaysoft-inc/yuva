@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use App\Models\SHG;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -34,7 +35,11 @@ class MemberController extends Controller
             'name' => 'required|string|max:255',
             'husband_father_name' => 'nullable|string|max:255',
             'role' => 'nullable|in:member,president,secretary,treasurer',
-            'date_of_birth' => 'nullable|date',
+            'date_of_birth' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'mobile' => 'nullable|string|max:15',
             'aadhar_number' => 'nullable|string|max:12|unique:members,aadhar_number',
             'pan_number' => 'nullable|string|max:10|unique:members,pan_number',
@@ -50,6 +55,8 @@ class MemberController extends Controller
             'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
+
+        $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
 
         $validated['shg_id'] = $shg->id;
 
@@ -97,7 +104,11 @@ class MemberController extends Controller
             'name' => 'required|string|max:255',
             'husband_father_name' => 'nullable|string|max:255',
             'role' => 'nullable|in:member,president,secretary,treasurer',
-            'date_of_birth' => 'nullable|date',
+            'date_of_birth' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'mobile' => 'nullable|string|max:15',
             'aadhar_number' => 'nullable|string|max:12|unique:members,aadhar_number,' . $member->id,
             'pan_number' => 'nullable|string|max:10|unique:members,pan_number,' . $member->id,
@@ -113,6 +124,8 @@ class MemberController extends Controller
             'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
+
+        $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
 
         // Handle file uploads
         if ($request->hasFile('passport_photo')) {
@@ -161,7 +174,11 @@ class MemberController extends Controller
             'name' => 'required|string|max:255',
             'husband_father_name' => 'nullable|string|max:255',
             'role' => 'nullable|in:member,president,secretary,treasurer',
-            'date_of_birth' => 'nullable|date',
+            'date_of_birth' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'mobile' => 'nullable|string|max:15',
             'aadhar_number' => 'nullable|string|max:12|unique:members,aadhar_number',
             'pan_number' => 'nullable|string|max:10|unique:members,pan_number',
@@ -177,6 +194,8 @@ class MemberController extends Controller
             'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
+
+        $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
 
         if ($request->hasFile('passport_photo')) {
             $validated['passport_photo'] = $request->file('passport_photo')->store('member-photos', 'public');
@@ -233,7 +252,11 @@ class MemberController extends Controller
             'shg_id' => 'required|exists:shgs,id',
             'name' => 'required|string|max:255',
             'husband_father_name' => 'nullable|string|max:255',
-            'date_of_birth' => 'nullable|date',
+            'date_of_birth' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
             'mobile' => 'required|string|max:15',
             'aadhar_number' => 'nullable|string|max:12|unique:members,aadhar_number',
             'pan_number' => 'nullable|string|max:10|unique:members,pan_number',
@@ -247,6 +270,8 @@ class MemberController extends Controller
             'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
+
+        $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
 
         // Handle file uploads
         if ($request->hasFile('passport_photo')) {
@@ -289,11 +314,17 @@ class MemberController extends Controller
     {
         $validated = $request->validate([
             'member_id_code' => 'required|string',
-            'date_of_birth' => 'required|date',
+            'date_of_birth' => ['required', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
         ]);
 
+        $searchDate = $this->normalizeDateInput($validated['date_of_birth']);
+
         $member = Member::where('member_id_code', $validated['member_id_code'])
-            ->whereDate('date_of_birth', $validated['date_of_birth'])
+            ->whereDate('date_of_birth', $searchDate)
             ->first();
 
         if (!$member) {
@@ -352,5 +383,42 @@ class MemberController extends Controller
         $member->update(['verification_status' => 'rejected']);
 
         return redirect()->route('members.unverified')->with('success', 'Member application rejected.');
+    }
+
+    private function isValidDateInput(?string $value): bool
+    {
+        if (empty($value)) {
+            return true;
+        }
+
+        foreach (['Y-m-d', 'd/m/Y'] as $format) {
+            try {
+                $date = Carbon::createFromFormat($format, $value);
+                if ($date && $date->format($format) === $value) {
+                    return true;
+                }
+            } catch (\Throwable) {
+                // Try next format
+            }
+        }
+
+        return false;
+    }
+
+    private function normalizeDateInput(?string $value): ?string
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) === 1) {
+            return Carbon::createFromFormat('Y-m-d', $value)->format('Y-m-d');
+        }
+
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $value) === 1) {
+            return Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+        }
+
+        return null;
     }
 }
