@@ -12,11 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Update existing 'member' roles to 'staff'
-        DB::table('users')->where('role', 'member')->update(['role' => 'staff']);
+        // For SQLite compatibility, we need to recreate the column
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
+        });
 
-        // Alter the enum to include 'staff' instead of 'member'
-        DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'staff') DEFAULT 'staff'");
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('role', ['admin', 'staff'])->default('staff')->after('email');
+        });
     }
 
     /**
@@ -24,10 +27,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Update existing 'staff' roles back to 'member'
-        DB::table('users')->where('role', 'staff')->update(['role' => 'member']);
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
+        });
 
-        // Alter the enum back to include 'member' instead of 'staff'
-        DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'member') DEFAULT 'member'");
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('role', ['admin', 'member'])->default('member')->after('email');
+        });
     }
 };
