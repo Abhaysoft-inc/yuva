@@ -19,18 +19,22 @@
 
                         {{-- Image Upload --}}
                         <div>
-                            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
-                                Image * <span class="text-gray-500 text-xs">(Recommended: Square images 800x800px)</span>
+                            <label for="images" class="block text-sm font-medium text-gray-700 mb-2">
+                                Images * <span class="text-gray-500 text-xs">(You can select multiple images, max 2MB each)</span>
                             </label>
-                            <input type="file" name="image" id="image" accept="image/*" required
-                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('image') border-red-500 @enderror">
-                            @error('image')
+                            <input type="file" name="images[]" id="images" accept="image/*" multiple required
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('images') border-red-500 @enderror @error('images.*') border-red-500 @enderror">
+                            @error('images')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                            @error('images.*')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
 
                             {{-- Image Preview --}}
                             <div id="imagePreview" class="mt-4 hidden">
-                                <img id="previewImg" src="" alt="Preview" class="max-w-sm h-auto rounded-lg shadow">
+                                <p class="text-sm font-medium text-gray-700 mb-2">Selected images preview:</p>
+                                <div id="previewGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
                             </div>
                         </div>
 
@@ -115,17 +119,42 @@
     </div>
 
     <script>
-        // Image preview
-        document.getElementById('image').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
+        // Multi-image preview
+        document.getElementById('images').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files || []);
+            const preview = document.getElementById('imagePreview');
+            const grid = document.getElementById('previewGrid');
+
+            grid.innerHTML = '';
+
+            if (!files.length) {
+                preview.classList.add('hidden');
+                return;
+            }
+
+            files.forEach((file) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').classList.remove('hidden');
+                reader.onload = function(event) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'rounded-lg overflow-hidden shadow border border-gray-200 bg-gray-50';
+
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.alt = file.name;
+                    img.className = 'w-full h-28 object-cover';
+
+                    const name = document.createElement('p');
+                    name.className = 'text-xs text-gray-600 p-2 truncate';
+                    name.textContent = file.name;
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(name);
+                    grid.appendChild(wrapper);
                 };
                 reader.readAsDataURL(file);
-            }
+            });
+
+            preview.classList.remove('hidden');
         });
     </script>
 </x-app-layout>

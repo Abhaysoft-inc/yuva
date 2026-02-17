@@ -22,9 +22,29 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     @if($galleries->count() > 0)
+                        <form id="bulkDeleteForm" action="{{ route('gallery.bulk-delete') }}" method="POST" class="mb-4 flex flex-wrap items-center gap-3">
+                            @csrf
+                            @method('DELETE')
+                            <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700">
+                                <input type="checkbox" id="selectAllGallery" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                Select All
+                            </label>
+                            <button type="submit" id="deleteSelectedBtn" disabled class="px-4 py-2 bg-red-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-700 transition">
+                                Delete Selected
+                            </button>
+                            <button type="button" id="clearSelectionBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                                Clear Selection
+                            </button>
+                            <span id="selectedCount" class="text-sm text-gray-500">0 selected</span>
+                        </form>
+
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             @foreach($galleries as $gallery)
                             <div class="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition">
+                                <div class="absolute z-20 top-2 left-2">
+                                    <input type="checkbox" name="gallery_ids[]" form="bulkDeleteForm" value="{{ $gallery->id }}" class="gallery-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                </div>
+
                                 {{-- Image --}}
                                 <div class="aspect-square bg-gray-200 relative">
                                     @if($gallery->image_path)
@@ -60,7 +80,7 @@
                                     </div>
 
                                     {{-- Order Badge --}}
-                                    <div class="absolute top-2 left-2">
+                                    <div class="absolute top-2 left-11">
                                         <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-bold">{{ $gallery->order }}</span>
                                     </div>
 
@@ -100,4 +120,73 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const selectAll = document.getElementById('selectAllGallery');
+        const checkboxes = Array.from(document.querySelectorAll('.gallery-checkbox'));
+        const deleteBtn = document.getElementById('deleteSelectedBtn');
+        const clearBtn = document.getElementById('clearSelectionBtn');
+        const selectedCount = document.getElementById('selectedCount');
+        const bulkForm = document.getElementById('bulkDeleteForm');
+
+        function syncSelectionState() {
+            const checkedCount = checkboxes.filter(cb => cb.checked).length;
+            const allChecked = checkboxes.length > 0 && checkedCount === checkboxes.length;
+
+            if (selectAll) {
+                selectAll.checked = allChecked;
+                selectAll.indeterminate = checkedCount > 0 && !allChecked;
+            }
+
+            if (deleteBtn) {
+                deleteBtn.disabled = checkedCount === 0;
+            }
+
+            if (selectedCount) {
+                selectedCount.textContent = checkedCount + ' selected';
+            }
+        }
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                checkboxes.forEach(cb => {
+                    cb.checked = this.checked;
+                });
+                syncSelectionState();
+            });
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                checkboxes.forEach(cb => {
+                    cb.checked = false;
+                });
+                if (selectAll) {
+                    selectAll.checked = false;
+                    selectAll.indeterminate = false;
+                }
+                syncSelectionState();
+            });
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', syncSelectionState);
+        });
+
+        if (bulkForm) {
+            bulkForm.addEventListener('submit', function(e) {
+                const checkedCount = checkboxes.filter(cb => cb.checked).length;
+                if (checkedCount === 0) {
+                    e.preventDefault();
+                    return;
+                }
+
+                if (!confirm('Are you sure you want to delete ' + checkedCount + ' selected image(s)?')) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        syncSelectionState();
+    </script>
 </x-app-layout>

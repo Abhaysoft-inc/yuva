@@ -33,22 +33,51 @@ class GalleryController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'category' => 'required|string|max:255',
             'order' => 'required|integer',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048|required_without:images',
+            'images' => 'nullable|array|required_without:image',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('gallery', 'public');
-            $validated['image_path'] = $imagePath;
+        $files = [];
+        if ($request->hasFile('images')) {
+            $files = $request->file('images');
+        } elseif ($request->hasFile('image')) {
+            $files = [$request->file('image')];
         }
 
-        $validated['is_active'] = $request->has('is_active');
+        if (empty($files)) {
+            return redirect()->back()
+                ->withErrors(['images' => 'Please upload at least one image.'])
+                ->withInput();
+        }
 
-        Gallery::create($validated);
+        $isActive = $request->has('is_active');
+        $baseOrder = (int) $validated['order'];
+        $createdCount = 0;
 
-        return redirect()->route('gallery.index')->with('success', 'Image added to gallery successfully!');
+        foreach ($files as $index => $file) {
+            $imagePath = $file->store('gallery', 'public');
+
+            Gallery::create([
+                'title' => $validated['title'] ?? null,
+                'description' => $validated['description'] ?? null,
+                'image_path' => $imagePath,
+                'category' => $validated['category'],
+                'order' => $baseOrder + $index,
+                'is_active' => $isActive,
+            ]);
+
+            $createdCount++;
+        }
+
+        $message = $createdCount === 1
+            ? 'Image added to gallery successfully!'
+            : $createdCount . ' images added to gallery successfully!';
+
+        return redirect()->route('gallery.index')->with('success', $message);
     }
 
     /**
@@ -110,5 +139,31 @@ class GalleryController extends Controller
         $gallery->delete();
 
         return redirect()->route('gallery.index')->with('success', 'Gallery image deleted successfully!');
+    }
+
+    /**
+     * Remove selected gallery images in bulk.
+     */
+    public function bulkDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'gallery_ids' => 'required|array|min:1',
+            'gallery_ids.*' => 'integer|exists:galleries,id',
+        ]);
+
+        $galleries = Gallery::whereIn('id', $validated['gallery_ids'])->get();
+
+        foreach ($galleries as $gallery) {
+            if ($gallery->image_path) {
+                Storage::disk('public')->delete($gallery->image_path);
+            }
+        }
+
+        $deleted = Gallery::whereIn('id', $validated['gallery_ids'])->delete();
+
+        return redirect()->route('gallery.index')->with(
+            'success',
+            $deleted . ' selected image(s) deleted successfully!'
+        );
     }
 }
