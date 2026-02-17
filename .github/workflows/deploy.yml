@@ -58,14 +58,14 @@ jobs:
       - name: Upload and extract on server
         env:
           REMOTE: u236674186@89.117.157.133
-          REMOTE_PATH: /home/u236674186/domains/dashboard.yuvamaitree.org.in
+          REMOTE_PATH: /home/u236674186/domains/yuvamaitree.org.in
         run: |
           # Upload archives
           scp -P 65002 -o StrictHostKeyChecking=no deploy.tar.gz public.tar.gz $REMOTE:$REMOTE_PATH/
 
           # Extract and run post-deploy commands
           ssh -p 65002 -o StrictHostKeyChecking=no $REMOTE << 'ENDSSH'
-            cd /home/u236674186/domains/dashboard.yuvamaitree.org.in
+            cd /home/u236674186/domains/yuvamaitree.org.in
 
             # Extract app files
             tar -xzf deploy.tar.gz
@@ -78,7 +78,7 @@ jobs:
             # Ensure storage symlink
             if [ ! -L public_html/storage ]; then
               rm -rf public_html/storage
-              ln -s /home/u236674186/domains/dashboard.yuvamaitree.org.in/storage/app/public public_html/storage
+              ln -s /home/u236674186/domains/yuvamaitree.org.in/storage/app/public public_html/storage
             fi
 
             # Install composer dependencies on server
@@ -100,4 +100,4 @@ jobs:
           ENDSSH
 
       - name: Deployment complete
-        run: echo "✅ Deployed to https://dashboard.yuvamaitree.org.in"
+        run: echo "✅ Deployed to https://yuvamaitree.org.in"
