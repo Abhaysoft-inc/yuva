@@ -287,10 +287,7 @@ class MemberController extends Controller
             $validated['bank_passbook_doc'] = $request->file('bank_passbook_doc')->store('member-docs', 'public');
         }
 
-        // Generate membership ID
-        $shg = SHG::findOrFail($validated['shg_id']);
-        $memberCount = $shg->members()->count();
-        $validated['member_id_code'] = strtoupper($shg->shg_code ?? 'SHG') . '-' . str_pad($memberCount + 1, 4, '0', STR_PAD_LEFT);
+        // Membership ID is generated globally by Member model.
         $validated['role'] = 'member';
         $validated['verification_status'] = 'pending'; // Set as pending for admin verification
 

@@ -62,24 +62,24 @@ class Member extends Model
     }
 
     /**
-     * Generate the next member ID code: YMF/SHG/YYYY/XXXX
+     * Generate the next member ID code: YMF/SHG/{YEAR}/0001, 0002, ...
      */
     public static function generateMemberIdCode(): string
     {
         $year = now()->year;
         $prefix = "YMF/SHG/{$year}/";
 
-        // Find the last member_id_code for this year
+        // Find the latest code for the current year and increment its trailing number.
         $lastCode = static::where('member_id_code', 'LIKE', $prefix . '%')
-            ->orderByRaw("CAST(SUBSTRING_INDEX(member_id_code, '/', -1) AS UNSIGNED) DESC")
+            ->orderByDesc('id')
             ->value('member_id_code');
 
-        if ($lastCode) {
-            $lastNumber = (int) substr($lastCode, strrpos($lastCode, '/') + 1);
-            $nextNumber = $lastNumber + 1;
-        } else {
-            $nextNumber = 1;
+        $lastNumber = 0;
+        if ($lastCode && preg_match('/(\d+)$/', $lastCode, $matches) === 1) {
+            $lastNumber = (int) $matches[1];
         }
+
+        $nextNumber = $lastNumber + 1;
 
         return $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
     }
