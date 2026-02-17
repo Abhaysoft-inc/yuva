@@ -15,8 +15,8 @@ class DonationController extends Controller
 
     public function __construct()
     {
-        $this->razorpayKey = env('RAZORPAY_KEY');
-        $this->razorpaySecret = env('RAZORPAY_SECRET');
+        $this->razorpayKey = config('services.razorpay.key');
+        $this->razorpaySecret = config('services.razorpay.secret');
     }
 
     /**
@@ -46,6 +46,18 @@ class DonationController extends Controller
         ]);
 
         try {
+            if (empty($this->razorpayKey) || empty($this->razorpaySecret)) {
+                Log::error('Razorpay credentials are missing.', [
+                    'key_present' => !empty($this->razorpayKey),
+                    'secret_present' => !empty($this->razorpaySecret),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Payment service configuration is incomplete. Please try again later.',
+                ], 500);
+            }
+
             // Create donation record
             $donation = Donation::create([
                 'donor_name' => $request->donor_name,
@@ -94,7 +106,10 @@ class DonationController extends Controller
                 'phone' => $request->phone,
             ]);
         } catch (\Exception $e) {
-            Log::error('Razorpay order creation failed: ' . $e->getMessage());
+            Log::error('Razorpay order creation failed.', [
+                'message' => $e->getMessage(),
+                'exception' => get_class($e),
+            ]);
             return response()->json([
                 'success' => false,
                 'message' => 'Payment initiation failed. Please try again.',
@@ -115,6 +130,16 @@ class DonationController extends Controller
         ]);
 
         try {
+            if (empty($this->razorpayKey) || empty($this->razorpaySecret)) {
+                Log::error('Razorpay credentials are missing during verification.', [
+                    'key_present' => !empty($this->razorpayKey),
+                    'secret_present' => !empty($this->razorpaySecret),
+                ]);
+
+                return redirect()->route('donation.failed')
+                    ->with('error', 'Payment service configuration is incomplete. Please contact support.');
+            }
+
             $api = new Api($this->razorpayKey, $this->razorpaySecret);
 
             $attributes = [

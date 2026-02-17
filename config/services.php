@@ -41,4 +41,9 @@ return [
         'sender_name' => env('MAIL_FROM_NAME', 'Yuva Maitree Foundation'),
     ],
 
+    'razorpay' => [
+        'key' => env('RAZORPAY_KEY'),
+        'secret' => env('RAZORPAY_SECRET'),
+    ],
+
 ];

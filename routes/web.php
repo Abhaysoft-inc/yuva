@@ -108,8 +108,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('directors', DirectorController::class);
 
         // Gallery management
-        Route::resource('gallery', GalleryController::class);
         Route::delete('gallery/bulk-delete', [GalleryController::class, 'bulkDelete'])->name('gallery.bulk-delete');
+        Route::resource('gallery', GalleryController::class);
 
         // Staff management
         Route::resource('staff', StaffController::class);
