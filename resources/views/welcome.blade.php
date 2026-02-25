@@ -226,7 +226,7 @@
                     समुदायों को सशक्त बनाना, जीवन बदलना
                 </p>
                 <p class="text-gray-500 mb-8 max-w-xl mx-auto">
-                    Yuva Maitree Foundation works towards women empowerment, skill development, and financial inclusion through Self Help Groups (SHGs) across rural India.
+                    Yuva Maitree Foundation works towards women empowerment, skill development, and financial inclusion across rural India.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     @auth
@@ -256,10 +256,10 @@
             </div>
             <div class="max-w-3xl mx-auto text-center">
                 <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                    Yuva Maitree Foundation is a non-governmental organization dedicated to the upliftment of rural communities, especially women, through the formation and management of Self Help Groups (SHGs).
+                    Yuva Maitree Foundation is a non-governmental organization dedicated to the upliftment of rural communities, especially women, through community development and empowerment programs.
                 </p>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    We believe in the power of collective effort. By bringing women together in SHGs, we help them build savings, access credit, develop skills, and become financially independent — creating a ripple effect of positive change in families and communities.
+                    We believe in the power of collective effort. By bringing women together, we help them build savings, access credit, develop skills, and become financially independent — creating a ripple effect of positive change in families and communities.
                 </p>
             </div>
         </div>
@@ -317,8 +317,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">SHG Formation</h3>
-                    <p class="text-gray-500">We organize women into Self Help Groups, providing training and guidance to help them manage savings, loans, and group finances.</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Women Empowerment</h3>
+                    <p class="text-gray-500">We organize women into community groups, providing training and guidance to help them manage savings, loans, and group finances.</p>
                 </div>
 
                 {{-- Card 2 --}}
