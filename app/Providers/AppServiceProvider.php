@@ -28,5 +28,14 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('contactInfo', Setting::getContactInfo());
             }
         });
+
+        // Share sidebar color with admin sidebar
+        View::composer('components.sidebar', function ($view) {
+            if (Schema::hasTable('settings')) {
+                $view->with('sidebarColor', Setting::get('sidebar_color', '#1e3a8a'));
+            } else {
+                $view->with('sidebarColor', '#1e3a8a');
+            }
+        });
     }
 }

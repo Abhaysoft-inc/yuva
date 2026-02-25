@@ -35,4 +35,27 @@ class SettingController extends Controller
 
         return redirect()->route('settings.contact')->with('success', 'Contact information updated successfully!');
     }
+
+    /**
+     * Show the appearance settings form.
+     */
+    public function appearance()
+    {
+        $sidebarColor = Setting::get('sidebar_color', '#1e3a8a');
+        return view('settings.appearance', compact('sidebarColor'));
+    }
+
+    /**
+     * Update appearance settings.
+     */
+    public function updateAppearance(Request $request)
+    {
+        $validated = $request->validate([
+            'sidebar_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
+        ]);
+
+        Setting::set('sidebar_color', $validated['sidebar_color']);
+
+        return redirect()->route('settings.appearance')->with('success', 'Sidebar color updated successfully!');
+    }
 }

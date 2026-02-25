@@ -123,6 +123,8 @@ Route::middleware('auth')->group(function () {
         // Settings
         Route::get('settings/contact', [SettingController::class, 'contactInfo'])->name('settings.contact');
         Route::put('settings/contact', [SettingController::class, 'updateContactInfo'])->name('settings.contact.update');
+        Route::get('settings/appearance', [SettingController::class, 'appearance'])->name('settings.appearance');
+        Route::put('settings/appearance', [SettingController::class, 'updateAppearance'])->name('settings.appearance.update');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
