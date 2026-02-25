@@ -14,7 +14,10 @@ class MemberController extends Controller
      */
     public function index(SHG $shg)
     {
-        $members = $shg->members()->latest()->paginate(15);
+        $members = $shg->members()
+            ->orderByRaw("FIELD(role, 'president', 'secretary', 'treasurer', 'member') ASC")
+            ->latest()
+            ->paginate(15);
         return view('members.index', compact('shg', 'members'));
     }
 
@@ -73,6 +76,8 @@ class MemberController extends Controller
         if ($request->hasFile('bank_passbook_doc')) {
             $validated['bank_passbook_doc'] = $request->file('bank_passbook_doc')->store('member-documents', 'public');
         }
+
+        $validated['verification_status'] = 'verified';
 
         Member::create($validated);
 
@@ -209,6 +214,8 @@ class MemberController extends Controller
         if ($request->hasFile('bank_passbook_doc')) {
             $validated['bank_passbook_doc'] = $request->file('bank_passbook_doc')->store('member-documents', 'public');
         }
+
+        $validated['verification_status'] = 'verified';
 
         $shg = SHG::findOrFail($validated['shg_id']);
         Member::create($validated);

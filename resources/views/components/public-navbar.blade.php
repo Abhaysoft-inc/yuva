@@ -21,10 +21,10 @@
                     </div>
                 </div>
                 
-                {{-- Enquiry Button --}}
+                {{-- Donate Button --}}
                 <div class="flex-shrink-0">
-                    <a href="#contact" class="px-6 py-2.5 bg-[#1b6a3c] hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-200 text-sm sm:text-base whitespace-nowrap">
-                        Enquiry Now
+                    <a href="{{ route('donate') }}" class="px-6 py-2.5 bg-[#1b6a3c] hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition duration-200 text-sm sm:text-base whitespace-nowrap">
+                        Donate Now
                     </a>
                 </div>
             </div>
