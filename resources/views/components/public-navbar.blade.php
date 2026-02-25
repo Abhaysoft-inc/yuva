@@ -44,11 +44,6 @@
                         Home
                     </a>
                     
-                    {{-- Member Apply --}}
-                    <a href="{{ route('apply') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
-                        Member Apply
-                    </a>
-                    
                     {{-- ID Card Download --}}
                     <a href="{{ route('id-card.download') }}" class="px-3 py-2 text-white hover:bg-green-700 rounded transition text-sm font-medium whitespace-nowrap">
                         ID Card Download

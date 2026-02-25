@@ -23,9 +23,9 @@
             <div>
                 <h4 class="font-semibold text-black mb-4">Contact / संपर्क</h4>
                 <ul class="space-y-2 text-sm">
-                    <li>Email: info@yuvamaitree.org</li>
-                    <li>Phone: +91 5567357294</li>
-                    <li>Location: Ward No: 02, युवा मैत्री फाउंडेशन YUVA MAITREE FOUNDATION, Abdul Hamid Nagar, Hata, Uttar Pradesh 274203</li>
+                    <li>Email: {{ $contactInfo['email'] ?? 'info@yuvamaitree.org' }}</li>
+                    <li>Phone: {{ $contactInfo['phone'] ?? '' }}</li>
+                    <li>Location: {{ $contactInfo['address'] ?? '' }}</li>
                 </ul>
             </div>
         </div>

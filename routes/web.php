@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ShgController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SlideController;
 use App\Http\Controllers\DirectorController;
@@ -118,6 +119,10 @@ Route::middleware('auth')->group(function () {
         Route::get('exports/all-csv', [DataManagementController::class, 'exportAllCsvZip'])->name('exports.all.csv');
         Route::get('backup/all-data', [DataManagementController::class, 'backupAllData'])->name('backup.all-data');
         Route::post('backup/restore', [DataManagementController::class, 'restoreBackup'])->name('backup.restore');
+
+        // Settings
+        Route::get('settings/contact', [SettingController::class, 'contactInfo'])->name('settings.contact');
+        Route::put('settings/contact', [SettingController::class, 'updateContactInfo'])->name('settings.contact.update');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

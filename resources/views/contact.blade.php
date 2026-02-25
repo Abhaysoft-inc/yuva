@@ -54,10 +54,7 @@
                             <div>
                                 <h3 class="font-semibold text-gray-900 text-lg mb-1">Office Address</h3>
                                 <p class="text-gray-600">
-                                    Yuva Maitree Foundation<br>
-                                    [Street Address]<br>
-                                    [City, State - PIN Code]<br>
-                                    India
+                                    {{ $contactInfo['address'] ?? 'Address not set' }}
                                 </p>
                             </div>
                         </div>
@@ -72,8 +69,7 @@
                             <div>
                                 <h3 class="font-semibold text-gray-900 text-lg mb-1">Phone</h3>
                                 <p class="text-gray-600">
-                                    +91 XXXXX XXXXX<br>
-                                    +91 XXXXX XXXXX
+                                    {{ $contactInfo['phone'] ?? 'Phone not set' }}
                                 </p>
                             </div>
                         </div>
@@ -88,8 +84,7 @@
                             <div>
                                 <h3 class="font-semibold text-gray-900 text-lg mb-1">Email</h3>
                                 <p class="text-gray-600">
-                                    info@yuvamaitree.org<br>
-                                    support@yuvamaitree.org
+                                    {{ $contactInfo['email'] ?? 'Email not set' }}
                                 </p>
                             </div>
                         </div>
