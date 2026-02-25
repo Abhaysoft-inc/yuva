@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SHG;
+use App\Models\Member;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -11,10 +12,23 @@ class ShgController extends Controller
     /**
      * Display a listing of the SHGs.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('member_search');
+        $memberResults = collect();
+
+        if ($search) {
+            $memberResults = Member::with('shg')
+                ->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('mobile', 'like', "%{$search}%");
+                })
+                ->limit(20)
+                ->get();
+        }
+
         $shgs = SHG::withCount('members')->latest()->paginate(10);
-        return view('shgs.index', compact('shgs'));
+        return view('shgs.index', compact('shgs', 'memberResults', 'search'));
     }
 
     /**
