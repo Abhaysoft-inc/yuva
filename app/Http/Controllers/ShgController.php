@@ -66,8 +66,8 @@ class ShgController extends Controller
             'treasurer_name' => 'nullable|string|max:255',
             'treasurer_contact' => 'nullable|string|max:15',
 
-            'meeting_proposal_document' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'group_photo' => 'nullable|image|max:2048',
+            'meeting_proposal_document' => 'nullable|file|mimes:pdf,jpg,png',
+            'group_photo' => 'nullable|image',
 
             'bank_account_number' => 'nullable|string|max:255',
             'bank_name' => 'nullable|string|max:255',
@@ -79,7 +79,7 @@ class ShgController extends Controller
             'monthly_saving_amount' => 'nullable|numeric|min:0',
 
             'declaration_accepted' => 'nullable|boolean',
-            'signature' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'signature' => 'nullable|file|mimes:jpg,png,pdf',
         ]);
 
         $validated['date_of_formation'] = $this->normalizeDateInput($validated['date_of_formation'] ?? null);
@@ -146,8 +146,8 @@ class ShgController extends Controller
             'treasurer_name' => 'nullable|string|max:255',
             'treasurer_contact' => 'nullable|string|max:15',
 
-            'meeting_proposal_document' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'group_photo' => 'nullable|image|max:2048',
+            'meeting_proposal_document' => 'nullable|file|mimes:pdf,jpg,png',
+            'group_photo' => 'nullable|image',
 
             'bank_account_number' => 'nullable|string|max:255',
             'bank_name' => 'nullable|string|max:255',
@@ -159,7 +159,7 @@ class ShgController extends Controller
             'monthly_saving_amount' => 'nullable|numeric|min:0',
 
             'declaration_accepted' => 'nullable|boolean',
-            'signature' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'signature' => 'nullable|file|mimes:jpg,png,pdf',
         ]);
 
         $validated['date_of_formation'] = $this->normalizeDateInput($validated['date_of_formation'] ?? null);

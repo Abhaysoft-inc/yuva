@@ -33,7 +33,7 @@ class SlideController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp',
             'order' => 'required|integer',
             'is_active' => 'boolean'
         ]);
@@ -74,7 +74,7 @@ class SlideController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
             'order' => 'required|integer',
             'is_active' => 'boolean'
         ]);

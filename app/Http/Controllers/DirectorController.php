@@ -34,7 +34,7 @@ class DirectorController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,webp',
             'order' => 'required|integer',
             'is_active' => 'boolean'
         ]);
@@ -76,7 +76,7 @@ class DirectorController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
             'order' => 'required|integer',
             'is_active' => 'boolean'
         ]);

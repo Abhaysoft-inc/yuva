@@ -66,10 +66,10 @@ class MemberController extends Controller
                 }
             }],
 
-            'passport_photo' => 'nullable|image|max:2048',
-            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'passport_photo' => 'nullable|image',
+            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf',
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
@@ -152,10 +152,10 @@ class MemberController extends Controller
                 }
             }],
 
-            'passport_photo' => 'nullable|image|max:2048',
-            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'passport_photo' => 'nullable|image',
+            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf',
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
@@ -224,10 +224,10 @@ class MemberController extends Controller
             'account_number' => 'nullable|string|max:255',
             'ifsc_code' => 'nullable|string|max:255',
 
-            'passport_photo' => 'nullable|image|max:2048',
-            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'passport_photo' => 'nullable|image',
+            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf',
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
@@ -330,10 +330,10 @@ class MemberController extends Controller
             'branch' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
             'ifsc_code' => 'nullable|string|max:255',
-            'passport_photo' => 'nullable|image|max:2048',
-            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'passport_photo' => 'nullable|image',
+            'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf',
+            'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf',
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);

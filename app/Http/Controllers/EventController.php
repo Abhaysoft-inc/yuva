@@ -41,7 +41,7 @@ class EventController extends Controller
             }],
             'event_time' => 'nullable',
             'location' => 'nullable|string|max:255',
-            'event_image' => 'nullable|image|max:2048',
+            'event_image' => 'nullable|image',
             'status' => 'required|in:upcoming,completed,cancelled',
         ]);
 
@@ -87,7 +87,7 @@ class EventController extends Controller
             }],
             'event_time' => 'nullable',
             'location' => 'nullable|string|max:255',
-            'event_image' => 'nullable|image|max:2048',
+            'event_image' => 'nullable|image',
             'status' => 'required|in:upcoming,completed,cancelled',
         ]);
 

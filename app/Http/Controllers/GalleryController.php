@@ -36,9 +36,9 @@ class GalleryController extends Controller
             'category' => 'required|string|max:255',
             'order' => 'required|integer',
             'is_active' => 'boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048|required_without:images',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|required_without:images',
             'images' => 'nullable|array|required_without:image',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp',
         ]);
 
         $files = [];
@@ -104,7 +104,7 @@ class GalleryController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp',
             'category' => 'required|string|max:255',
             'order' => 'required|integer',
             'is_active' => 'boolean'
