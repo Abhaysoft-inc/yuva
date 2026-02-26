@@ -327,31 +327,10 @@ class DonationController extends Controller
     private function generateQrCodeDataUri(string $data): ?string
     {
         try {
-            $response = Http::timeout(10)->get('https://api.qrserver.com/v1/create-qr-code/', [
-                'size' => '180x180',
-                'format' => 'png',
-                'margin' => 0,
-                'data' => $data,
-            ]);
-
-            if (! $response->successful()) {
-                Log::warning('QR generation failed with non-success response.', [
-                    'status' => $response->status(),
-                ]);
-                return null;
-            }
-
-            $contentType = $response->header('Content-Type', 'image/png');
-            if (strpos($contentType, 'image/') !== 0) {
-                Log::warning('QR generation returned unexpected content type.', [
-                    'content_type' => $contentType,
-                ]);
-                return null;
-            }
-
-            return 'data:' . $contentType . ';base64,' . base64_encode($response->body());
+            $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size(180)->generate($data);
+            return 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
         } catch (\Throwable $e) {
-            Log::warning('QR generation request failed.', [
+            Log::warning('QR generation failed.', [
                 'message' => $e->getMessage(),
             ]);
             return null;

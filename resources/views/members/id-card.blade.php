@@ -297,7 +297,7 @@
                 </div>
                 <div class="qr-section">
                     <div class="qr-frame">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '')) }}" alt="QR Code">
+                        {!! \SimpleSoftwareIo\QrCode\Facades\QrCode::size(200)->generate($member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '')) !!}
                     </div>
                 </div>
             </div>

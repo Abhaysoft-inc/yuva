@@ -400,7 +400,7 @@
                 </table>
 
                 <div class="qr-section">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($staffApplication->staff_id_code . ' | ' . $staffApplication->name . ' | STAFF | ' . ($staffApplication->mobile ?? '')) }}" alt="QR Code">
+                    {!! \SimpleSoftwareIo\QrCode\Facades\QrCode::size(200)->generate($staffApplication->staff_id_code . ' | ' . $staffApplication->name . ' | STAFF | ' . ($staffApplication->mobile ?? '')) !!}
                 </div>
             </div>
 

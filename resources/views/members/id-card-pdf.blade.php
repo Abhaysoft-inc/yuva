@@ -227,7 +227,12 @@
                     @endif
 
                     <div class="qr-code">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '')) }}" alt="QR">
+                        @php
+                            $qrData = $member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '');
+                            $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size(200)->generate($qrData);
+                            $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+                        @endphp
+                        <img src="{{ $qrBase64 }}" alt="QR">
                     </div>
                 </td>
             </tr>

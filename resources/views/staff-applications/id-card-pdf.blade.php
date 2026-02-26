@@ -297,7 +297,12 @@
         </table>
 
         <div class="qr-section">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($staffApplication->staff_id_code . ' | ' . $staffApplication->name . ' | STAFF | ' . ($staffApplication->mobile ?? '')) }}" alt="QR">
+            @php
+                $qrData = $staffApplication->staff_id_code . ' | ' . $staffApplication->name . ' | STAFF | ' . ($staffApplication->mobile ?? '');
+                $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size(200)->generate($qrData);
+                $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+            @endphp
+            <img src="{{ $qrBase64 }}" alt="QR">
         </div>
 
         <table class="footer-table">
