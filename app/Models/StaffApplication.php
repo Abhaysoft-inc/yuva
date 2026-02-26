@@ -90,4 +90,12 @@ class StaffApplication extends Model
     {
         return $this->date_of_birth ? $this->date_of_birth->age : null;
     }
+
+    /**
+     * Get the user account created from this application.
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'staff_application_id');
+    }
 }

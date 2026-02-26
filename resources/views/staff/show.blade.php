@@ -102,6 +102,48 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Linked Staff Application --}}
+            @if($staff->staffApplication)
+            <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl mt-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Staff Application Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Staff ID Code</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->staff_id_code }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Designation</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->designation ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Date of Birth</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->date_of_birth ? $staff->staffApplication->date_of_birth->format('d/m/Y') : '-' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Mobile</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->mobile ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Blood Group</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->blood_group ?? '-' }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Aadhar Number</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->aadhar_number ?? '-' }}</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-500 mb-1">Address</label>
+                        <p class="text-gray-900">{{ $staff->staffApplication->address ?? '-' }}</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ route('staff-applications.show', $staff->staffApplication) }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        View Full Application &rarr;
+                    </a>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </body>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\StaffApplication;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class StaffApplicationController extends Controller
@@ -100,7 +102,20 @@ class StaffApplicationController extends Controller
     {
         $staffApplication->update(['verification_status' => 'verified']);
 
-        return redirect()->back()->with('success', $staffApplication->name . ' has been verified as staff.');
+        // Create a user account with staff role if one doesn't exist
+        if (!$staffApplication->user) {
+            $defaultPassword = 'staff@' . now()->year;
+
+            User::create([
+                'name' => $staffApplication->name,
+                'email' => $staffApplication->email,
+                'password' => Hash::make($defaultPassword),
+                'role' => 'staff',
+                'staff_application_id' => $staffApplication->id,
+            ]);
+        }
+
+        return redirect()->back()->with('success', $staffApplication->name . ' has been verified and a staff account has been created (default password: staff@' . now()->year . ').');
     }
 
     /**
@@ -108,6 +123,11 @@ class StaffApplicationController extends Controller
      */
     public function reject(StaffApplication $staffApplication)
     {
+        // Delete linked user account if one exists
+        if ($staffApplication->user) {
+            $staffApplication->user->delete();
+        }
+
         $staffApplication->update(['verification_status' => 'rejected']);
 
         return redirect()->back()->with('success', $staffApplication->name . ' has been rejected.');

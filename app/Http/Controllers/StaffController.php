@@ -14,7 +14,8 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staff = User::whereIn('role', ['admin', 'staff'])
+        $staff = User::with('staffApplication')
+            ->whereIn('role', ['admin', 'staff'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         return view('staff.index', compact('staff'));
@@ -56,6 +57,7 @@ class StaffController extends Controller
      */
     public function show(User $staff)
     {
+        $staff->load('staffApplication');
         return view('staff.show', compact('staff'));
     }
 

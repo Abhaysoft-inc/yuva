@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'staff_application_id',
     ];
 
     /**
@@ -65,5 +66,13 @@ class User extends Authenticatable
     public function isStaff(): bool
     {
         return $this->role === 'staff';
+    }
+
+    /**
+     * Get the linked staff application.
+     */
+    public function staffApplication()
+    {
+        return $this->belongsTo(StaffApplication::class);
     }
 }
