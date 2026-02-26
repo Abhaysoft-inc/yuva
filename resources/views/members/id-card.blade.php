@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID Card — {{ $member->name }}</title>
+    <title>FD Card — {{ $member->name }}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: Arial, 'Segoe UI', sans-serif;
             background: #f3f4f6;
             padding: 20px;
         }
@@ -30,370 +30,284 @@
         }
         .btn-print { background: #4f46e5; color: #fff; }
         .btn-print:hover { background: #4338ca; }
+        .btn-download { background: #059669; color: #fff; }
+        .btn-download:hover { background: #047857; }
         .btn-back { background: #6b7280; color: #fff; }
         .btn-back:hover { background: #4b5563; }
 
-        .cards-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            width: 340px;
-            height: 540px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            position: relative;
+        .card-container {
+            max-width: 800px;
+            margin: 0 auto;
             background: #fff;
+            border: 2px solid #ccc;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        /* ========== FRONT SIDE ========== */
-        .card-front .header {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            padding: 12px 16px;
-            text-align: center;
+        /* Header Banner */
+        .card-header {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
             color: #fff;
-            position: relative;
+            text-align: center;
+            padding: 14px 20px;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
-        .card-front .header .org-name {
-            font-size: 16px;
+
+        /* Main Content Area */
+        .card-body {
+            display: table;
+            width: 100%;
+        }
+
+        .card-left {
+            display: table-cell;
+            vertical-align: top;
+        }
+
+        .card-right {
+            display: table-cell;
+            vertical-align: top;
+            width: 175px;
+            border-left: 1px solid #bbb;
+        }
+
+        /* Details Table */
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table td {
+            padding: 7px 10px;
+            font-size: 13.5px;
+            border: 1px solid #bbb;
+            vertical-align: middle;
+        }
+
+        .details-table td.label {
             font-weight: 700;
-            line-height: 1.3;
+            color: #111;
+            white-space: nowrap;
+            background: #f5f5f5;
+            width: 140px;
         }
-        .card-front .header .org-name-hindi {
-            font-size: 13px;
+
+        .details-table td.value {
+            color: #222;
             font-weight: 500;
         }
-        .card-front .header .website {
-            font-size: 9px;
-            color: #fef3c7;
-            margin-top: 2px;
+
+        .details-table td.label2 {
+            font-weight: 700;
+            color: #111;
+            white-space: nowrap;
+            background: #f5f5f5;
+            width: 130px;
         }
 
-        .card-front .body {
-            padding: 16px;
+        .details-table td.value2 {
+            color: #222;
+            font-weight: 500;
+        }
+
+        /* Photo */
+        .photo-section {
+            padding: 10px;
             text-align: center;
         }
-        .card-front .photo-frame {
-            width: 120px;
-            height: 140px;
-            margin: 0 auto 12px;
-            border: 3px solid #ef4444;
-            border-radius: 8px;
+
+        .photo-frame {
+            width: 150px;
+            height: 170px;
+            margin: 0 auto;
+            border: 2px solid #999;
             overflow: hidden;
-            position: relative;
             background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .card-front .photo-frame img {
+
+        .photo-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .card-front .photo-frame .placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .photo-frame .placeholder {
             font-size: 48px;
             font-weight: 700;
             color: #9ca3af;
-            background: #e5e7eb;
         }
 
-        .card-front .member-name {
-            font-size: 20px;
-            font-weight: 800;
-            color: #1f2937;
-            text-transform: uppercase;
-            margin-bottom: 2px;
-        }
-        .card-front .member-role {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 12px;
-        }
-
-        .card-front .info-table {
-            text-align: left;
-            width: 100%;
-        }
-        .card-front .info-table tr td {
-            padding: 2px 0;
-            font-size: 12px;
-        }
-        .card-front .info-table tr td:first-child {
-            color: #dc2626;
-            font-weight: 700;
-            width: 90px;
-        }
-        .card-front .info-table tr td:nth-child(2) {
-            width: 12px;
-            text-align: center;
-            color: #dc2626;
-            font-weight: 700;
-        }
-        .card-front .info-table tr td:last-child {
-            color: #1f2937;
-            font-weight: 600;
-        }
-
-        .card-front .footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #16a34a, #15803d);
-            padding: 8px;
+        /* QR Code */
+        .qr-section {
+            padding: 8px 10px;
             text-align: center;
         }
-        .card-front .footer .contact {
-            color: #fff;
-            font-size: 11px;
-            font-weight: 600;
-        }
 
-        /* ========== BACK SIDE ========== */
-        .card-back .header {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            padding: 12px 16px;
-            text-align: center;
-            color: #fff;
-        }
-        .card-back .header .org-name {
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-        .card-back .header .org-name-hindi {
-            font-size: 13px;
-            font-weight: 500;
-        }
-        .card-back .header .website {
-            font-size: 9px;
-            color: #fef3c7;
-            margin-top: 2px;
-        }
-
-        .card-back .body {
-            padding: 20px;
-            min-height: 340px;
-        }
-        .card-back .qr-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .card-back .qr-section .qr-placeholder {
-            width: 100px;
-            height: 100px;
+        .qr-frame {
+            width: 110px;
+            height: 110px;
             margin: 0 auto;
-            border: 2px solid #d1d5db;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f9fafb;
-        }
-        .card-back .qr-section .qr-placeholder svg {
-            width: 80px;
-            height: 80px;
-            color: #374151;
         }
 
-        .card-back .info-table {
+        .qr-frame img {
             width: 100%;
-            margin-top: 16px;
+            height: 100%;
         }
-        .card-back .info-table tr td {
-            padding: 4px 0;
+
+        /* Footer */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 20px 20px 12px;
+            border-top: 1px solid #bbb;
+            min-height: 70px;
+        }
+
+        .signature-area {
             font-size: 13px;
-            vertical-align: top;
-        }
-        .card-back .info-table tr td:first-child {
-            color: #dc2626;
-            font-weight: 700;
-            width: 80px;
-        }
-        .card-back .info-table tr td:nth-child(2) {
-            width: 14px;
-            text-align: center;
-            color: #dc2626;
-            font-weight: 700;
-        }
-        .card-back .info-table tr td:last-child {
-            color: #1f2937;
+            color: #555;
             font-weight: 600;
-        }
-
-        .card-back .footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #16a34a, #15803d);
-            padding: 8px 12px;
+            border-top: 1px dashed #999;
+            padding-top: 6px;
+            min-width: 260px;
             text-align: center;
         }
-        .card-back .footer .office {
-            color: #fff;
-            font-size: 10px;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-        .card-back .footer .contact {
-            color: #fef3c7;
-            font-size: 10px;
+
+        .office-area {
+            font-size: 13px;
+            color: #555;
             font-weight: 600;
-            margin-top: 2px;
+            text-align: right;
         }
 
-        /* Watermark */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            font-size: 40px;
-            font-weight: 900;
-            color: rgba(0,0,0,0.03);
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        /* ========== PRINT STYLES ========== */
+        /* Print Styles */
         @media print {
-            body { background: #fff; padding: 0; margin: 0; }
+            body { background: #fff; padding: 10px; margin: 0; }
             .print-controls { display: none !important; }
-            .cards-container {
-                gap: 20px;
-                page-break-inside: avoid;
-            }
-            .card {
+            .card-container {
                 box-shadow: none;
-                border: 1px solid #ccc;
+                border: 1px solid #999;
+                max-width: 100%;
                 print-color-adjust: exact;
                 -webkit-print-color-adjust: exact;
             }
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 15mm;
         }
     </style>
 </head>
 <body>
 
     <div class="print-controls">
-        <button class="btn-print" onclick="window.print()">🖨️ Print ID Card</button>
-        <a href="{{ url('/') }}" class="btn-back">🏠 Home</a>
+        <button class="btn-print" onclick="window.print()">🖨️ Print FD Card</button>
+        <a href="{{ route('shgs.members.fd-card.pdf', [$shg, $member]) }}" class="btn-download">📥 Download PDF</a>
+        <a href="{{ route('shgs.members.show', [$shg, $member]) }}" class="btn-back">← Back to Member</a>
     </div>
 
-    <div class="cards-container">
+    <div class="card-container">
+        {{-- Header --}}
+        <div class="card-header">
+            {{ strtoupper($shg->shg_name ?? 'YUVA MAITREE FOUNDATION') }}
+        </div>
 
-        {{-- ========== FRONT SIDE ========== --}}
-        <div class="card card-front">
-            <div class="header">
-                <div class="org-name">Yuva Maitree Foundation</div>
-                <div class="org-name-hindi">युवा मैत्री फाउंडेशन</div>
-            </div>
-
-            <div class="body">
-                <div class="photo-frame">
-                    @if($member->passport_photo)
-                        <img src="{{ asset('storage/' . $member->passport_photo) }}" alt="{{ $member->name }}">
-                    @else
-                        <div class="placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
-                    @endif
-                </div>
-
-                <div class="member-name">{{ $member->name }}</div>
-                <div class="member-role">{{ ucfirst($member->role) }}</div>
-
-                <table class="info-table">
+        {{-- Body --}}
+        <div class="card-body">
+            {{-- Left: Details Table --}}
+            <div class="card-left">
+                <table class="details-table">
                     <tr>
-                        <td>ID No.</td>
-                        <td>:</td>
-                        <td>{{ $member->id_number }}</td>
+                        <td class="label">SHG Group Code</td>
+                        <td class="value" colspan="3">{{ $shg->shg_code ?? '-' }}</td>
                     </tr>
                     <tr>
-                        <td>Blood Group</td>
-                        <td>:</td>
-                        <td>{{ $member->blood_group ?? '-' }}</td>
+                        <td class="label">Member Name:</td>
+                        <td class="value" colspan="3">{{ $member->name }}</td>
                     </tr>
                     <tr>
-                        <td>Mobile</td>
-                        <td>:</td>
-                        <td>{{ $member->mobile ?? '-' }}</td>
+                        <td class="label">Father / Husband<br>Name.</td>
+                        <td class="value" colspan="3">{{ strtoupper($member->husband_father_name ?? '-') }}</td>
                     </tr>
                     <tr>
-                        <td>Valid From</td>
-                        <td>:</td>
-                        <td>{{ $member->valid_from ? $member->valid_from->format('d/m/Y') : '-' }}</td>
+                        <td class="label">Address</td>
+                        <td class="value" colspan="3">{{ strtoupper($member->address ?? '-') }}</td>
                     </tr>
                     <tr>
-                        <td>Valid To</td>
-                        <td>:</td>
-                        <td>{{ $member->valid_to ? $member->valid_to->format('d/m/Y') : '-' }}</td>
+                        <td class="label">Contact No.</td>
+                        <td class="value" colspan="3">{{ $member->mobile ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">PAN No.</td>
+                        <td class="value" colspan="3">{{ strtoupper($member->pan_number ?? '-') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Aadhar No.</td>
+                        <td class="value" colspan="3">{{ $member->member_id_code ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">FD Amount</td>
+                        <td class="value">Rs. {{ $member->fd_amount ? number_format($member->fd_amount, 0) : '0' }} — Auto</td>
+                        <td class="label2">Interest Rate</td>
+                        <td class="value2">{{ $member->fd_interest_rate ?? '12' }}% p.a.</td>
+                    </tr>
+                    <tr>
+                        <td class="label">FD Start Date</td>
+                        <td class="value">{{ $member->fd_start_date ? $member->fd_start_date->format('d/m/Y') : '-' }}</td>
+                        <td class="label2">FD Maturity Date</td>
+                        <td class="value2">{{ $member->fd_maturity_date ? $member->fd_maturity_date->format('d/m/Y') : '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Maturity Amount</td>
+                        <td class="value">Rs. {{ $member->fd_maturity_amount ? number_format($member->fd_maturity_amount, 2) : '0.00' }} — Auto</td>
+                        <td class="label2">Bank Name:</td>
+                        <td class="value2">{{ strtoupper($member->bank_name ?? '-') }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Bank Name</td>
+                        <td class="value">{{ strtoupper($member->bank_name ?? '-') }}</td>
+                        <td class="label2">IFSC Code</td>
+                        <td class="value2">{{ strtoupper($member->ifsc_code ?? '-') }}</td>
                     </tr>
                 </table>
             </div>
 
-            <div class="watermark">YMF</div>
-
-            <div class="footer">
-                <div class="contact">Membership ID: {{ $member->member_id_code }}</div>
-            </div>
-        </div>
-
-        {{-- ========== BACK SIDE ========== --}}
-        <div class="card card-back">
-            <div class="header">
-                <div class="org-name">Yuva Maitree Foundation</div>
-                <div class="org-name-hindi">युवा मैत्री फाउंडेशन</div>
-            </div>
-
-            <div class="body">
-                <div class="qr-section">
-                    <div class="qr-placeholder">
-                        {{-- QR Code SVG placeholder --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75H16.5v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75H16.5v-.75z" />
-                        </svg>
+            {{-- Right: Photo + QR --}}
+            <div class="card-right">
+                <div class="photo-section">
+                    <div class="photo-frame">
+                        @if($member->passport_photo)
+                            <img src="{{ asset('storage/' . $member->passport_photo) }}" alt="{{ $member->name }}">
+                        @else
+                            <div class="placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
+                        @endif
                     </div>
                 </div>
-
-                <table class="info-table">
-                    <tr>
-                        <td>S/O</td>
-                        <td>:</td>
-                        <td>{{ $member->husband_father_name ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td>DOB</td>
-                        <td>:</td>
-                        <td>{{ $member->date_of_birth ? $member->date_of_birth->format('d/m/Y') : '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td>SHG</td>
-                        <td>:</td>
-                        <td>{{ $shg->shg_name }} ({{ $shg->shg_code ?? '' }})</td>
-                    </tr>
-                    <tr>
-                        <td>Address</td>
-                        <td>:</td>
-                        <td>{{ $member->address ?? '-' }}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="watermark">YMF</div>
-
-            <div class="footer">
-                <div class="office">Unique Form Code: {{ $member->member_id_code }}</div>
-                <div class="contact">SHG: {{ $shg->shg_name }} | {{ $shg->village ?? '' }}, {{ $shg->district ?? '' }}</div>
+                <div class="qr-section">
+                    <div class="qr-frame">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '')) }}" alt="QR Code">
+                    </div>
+                </div>
             </div>
         </div>
 
+        {{-- Footer --}}
+        <div class="card-footer">
+            <div class="signature-area">
+                Member Signature / Thumb Impression
+            </div>
+            <div class="office-area">
+                For Office Use Only
+            </div>
+        </div>
     </div>
 
 </body>

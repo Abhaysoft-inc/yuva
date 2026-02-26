@@ -115,6 +115,33 @@
                             </div>
                         </fieldset>
 
+                        {{-- FD Details --}}
+                        <fieldset class="border border-gray-200 rounded-lg p-4 mb-6">
+                            <legend class="text-lg font-semibold text-gray-700 px-2">FD Details / एफडी विवरण</legend>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div>
+                                    <x-input-label for="fd_amount" value="FD Amount / एफडी राशि (₹)" />
+                                    <x-text-input id="fd_amount" name="fd_amount" type="number" step="0.01" class="mt-1 block w-full" :value="old('fd_amount', $member->fd_amount ?? '1000')" placeholder="e.g. 1000" />
+                                    <x-input-error :messages="$errors->get('fd_amount')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="fd_interest_rate" value="Interest Rate (% p.a.) / ब्याज दर" />
+                                    <x-text-input id="fd_interest_rate" name="fd_interest_rate" type="number" step="0.01" class="mt-1 block w-full" :value="old('fd_interest_rate', $member->fd_interest_rate ?? '12')" placeholder="e.g. 12" />
+                                    <x-input-error :messages="$errors->get('fd_interest_rate')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="fd_start_date" value="FD Start Date / एफडी शुरू तिथि" />
+                                    <x-text-input id="fd_start_date" name="fd_start_date" type="date" class="mt-1 block w-full" :value="old('fd_start_date', $member->fd_start_date?->format('Y-m-d'))" />
+                                    <x-input-error :messages="$errors->get('fd_start_date')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="fd_maturity_date" value="FD Maturity Date / एफडी परिपक्वता तिथि" />
+                                    <x-text-input id="fd_maturity_date" name="fd_maturity_date" type="date" class="mt-1 block w-full" :value="old('fd_maturity_date', $member->fd_maturity_date?->format('Y-m-d'))" />
+                                    <x-input-error :messages="$errors->get('fd_maturity_date')" class="mt-2" />
+                                </div>
+                            </div>
+                        </fieldset>
+
                         {{-- Member Documents --}}
                         <fieldset class="border border-gray-200 rounded-lg p-4 mb-6">
                             <legend class="text-lg font-semibold text-gray-700 px-2">Member Documents / सदस्य दस्तावेज़</legend>

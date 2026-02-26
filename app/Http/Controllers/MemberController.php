@@ -53,6 +53,11 @@ class MemberController extends Controller
             'account_number' => 'nullable|string|max:255',
             'ifsc_code' => 'nullable|string|max:255',
 
+            'fd_amount' => 'nullable|numeric|min:0',
+            'fd_interest_rate' => 'nullable|numeric|min:0|max:100',
+            'fd_start_date' => 'nullable|date',
+            'fd_maturity_date' => 'nullable|date|after_or_equal:fd_start_date',
+
             'passport_photo' => 'nullable|image|max:2048',
             'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
@@ -123,6 +128,11 @@ class MemberController extends Controller
             'branch' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
             'ifsc_code' => 'nullable|string|max:255',
+
+            'fd_amount' => 'nullable|numeric|min:0',
+            'fd_interest_rate' => 'nullable|numeric|min:0|max:100',
+            'fd_start_date' => 'nullable|date',
+            'fd_maturity_date' => 'nullable|date|after_or_equal:fd_start_date',
 
             'passport_photo' => 'nullable|image|max:2048',
             'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
@@ -224,12 +234,40 @@ class MemberController extends Controller
     }
 
     /**
-     * Generate and display the member's ID card.
+     * Create FD for a member (fixed: Rs.1000, 12% p.a., 5 years).
      */
-    public function idCard(SHG $shg, Member $member)
+    public function createFd(SHG $shg, Member $member)
+    {
+        $today = now();
+        $member->update([
+            'fd_amount' => 1000,
+            'fd_interest_rate' => 12,
+            'fd_start_date' => $today->toDateString(),
+            'fd_maturity_date' => $today->copy()->addYears(5)->toDateString(),
+        ]);
+
+        return redirect()->route('shgs.members.fd-card', [$shg, $member])
+            ->with('success', 'FD created successfully for ' . $member->name);
+    }
+
+    /**
+     * Generate and display the member's FD card.
+     */
+    public function fdCard(SHG $shg, Member $member)
     {
         $member->load('shg');
         return view('members.id-card', compact('shg', 'member'));
+    }
+
+    /**
+     * Download the member's FD card as PDF.
+     */
+    public function fdCardPdf(SHG $shg, Member $member)
+    {
+        $member->load('shg');
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('members.id-card-pdf', compact('shg', 'member'));
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->download('fd-card-' . ($member->member_id_code ?? $member->id) . '.pdf');
     }
 
     /**

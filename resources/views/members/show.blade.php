@@ -14,6 +14,19 @@
                    class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition ease-in-out duration-150">
                     Form
                 </a>
+                @if($member->fd_start_date)
+                <a href="{{ route('shgs.members.fd-card', [$shg, $member]) }}"
+                   class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 transition ease-in-out duration-150">
+                    FD Card
+                </a>
+                @else
+                <form action="{{ route('shgs.members.create-fd', [$shg, $member]) }}" method="POST" class="inline" onsubmit="return confirm('Create FD (Rs.1,000, 12% p.a., 5 years) for {{ $member->name }}?')">
+                    @csrf
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 transition ease-in-out duration-150">
+                        Create FD
+                    </button>
+                </form>
+                @endif
                 <a href="{{ route('shgs.members.edit', [$shg, $member]) }}"
                    class="inline-flex items-center px-4 py-2 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-600 transition ease-in-out duration-150">
                     Edit

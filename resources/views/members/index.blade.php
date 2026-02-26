@@ -79,6 +79,14 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                             <a href="{{ route('shgs.members.show', [$shg, $member]) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
                                             <a href="{{ route('shgs.members.membership-form', [$shg, $member]) }}" class="text-indigo-600 hover:text-indigo-900">Form</a>
+                                            @if($member->fd_start_date)
+                                                <a href="{{ route('shgs.members.fd-card', [$shg, $member]) }}" class="text-green-600 hover:text-green-900" title="View FD Card">FD Card</a>
+                                            @else
+                                                <form action="{{ route('shgs.members.create-fd', [$shg, $member]) }}" method="POST" class="inline" onsubmit="return confirm('Create FD (Rs.1,000, 12% p.a., 5 years) for {{ $member->name }}?')">
+                                                    @csrf
+                                                    <button type="submit" class="text-green-600 hover:text-green-900 font-medium">Create FD</button>
+                                                </form>
+                                            @endif
                                             <a href="{{ route('shgs.members.edit', [$shg, $member]) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                                             <form action="{{ route('shgs.members.destroy', [$shg, $member]) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this member?')">
                                                 @csrf

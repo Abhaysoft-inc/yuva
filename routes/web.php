@@ -74,7 +74,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('staff')->group(function () {
         Route::resource('shgs', ShgController::class);
         Route::resource('shgs.members', MemberController::class);
-        Route::get('shgs/{shg}/members/{member}/id-card', [MemberController::class, 'idCard'])->name('shgs.members.id-card');
+        Route::post('shgs/{shg}/members/{member}/create-fd', [MemberController::class, 'createFd'])->name('shgs.members.create-fd');
+        Route::get('shgs/{shg}/members/{member}/fd-card', [MemberController::class, 'fdCard'])->name('shgs.members.fd-card');
+        Route::get('shgs/{shg}/members/{member}/fd-card-pdf', [MemberController::class, 'fdCardPdf'])->name('shgs.members.fd-card.pdf');
         Route::get('shgs/{shg}/members/{member}/membership-form', [MemberController::class, 'membershipForm'])->name('shgs.members.membership-form');
 
         // Standalone member create (with SHG chooser)

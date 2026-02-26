@@ -25,6 +25,12 @@ class Member extends Model
         'account_number',
         'ifsc_code',
 
+        // FD Details
+        'fd_amount',
+        'fd_interest_rate',
+        'fd_start_date',
+        'fd_maturity_date',
+
         // Documents
         'passport_photo',
         'aadhar_card_doc',
@@ -41,6 +47,10 @@ class Member extends Model
         'date_of_birth' => 'date',
         'valid_from' => 'date',
         'valid_to' => 'date',
+        'fd_start_date' => 'date',
+        'fd_maturity_date' => 'date',
+        'fd_amount' => 'decimal:2',
+        'fd_interest_rate' => 'decimal:2',
     ];
 
     /**
@@ -90,6 +100,22 @@ class Member extends Model
     public function getAgeAttribute()
     {
         return $this->date_of_birth ? $this->date_of_birth->age : null;
+    }
+
+    /**
+     * Calculate FD maturity amount using compound interest.
+     * A = P(1 + r/100)^n where n = years
+     */
+    public function getFdMaturityAmountAttribute()
+    {
+        if (!$this->fd_amount || !$this->fd_interest_rate || !$this->fd_start_date || !$this->fd_maturity_date) {
+            return null;
+        }
+
+        $years = $this->fd_start_date->diffInDays($this->fd_maturity_date) / 365;
+        $amount = $this->fd_amount * pow(1 + ($this->fd_interest_rate / 100), $years);
+
+        return round($amount, 2);
     }
 
     /**
