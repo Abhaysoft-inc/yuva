@@ -104,13 +104,13 @@
                                 </svg>
                             </div>
                             <input 
-                                type="date" 
+                                type="text" 
                                 name="date_of_birth" 
                                 id="date_of_birth" 
                                 value="{{ old('date_of_birth') }}" 
                                 required
-                                max="{{ date('Y-m-d') }}"
-                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                                placeholder="dd/mm/yyyy"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg date-input"
                             >
                         </div>
                         @error('date_of_birth')
@@ -161,5 +161,6 @@
         </div>
     </footer>
 
+<x-date-input-script />
 </body>
 </html>

@@ -38,5 +38,6 @@
                 </main>
             </div>
         </div>
+        <x-date-input-script />
     </body>
 </html>

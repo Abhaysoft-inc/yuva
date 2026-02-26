@@ -52,9 +52,10 @@
                                 <x-text-input 
                                     id="event_date" 
                                     name="event_date" 
-                                    type="date" 
-                                    class="mt-1 block w-full" 
-                                    :value="old('event_date', $event->event_date->format('Y-m-d'))" 
+                                    type="text" 
+                                    class="mt-1 block w-full date-input" 
+                                    placeholder="dd/mm/yyyy"
+                                    :value="old('event_date', $event->event_date->format('d/m/Y'))" 
                                     required
                                 />
                                 <x-input-error :messages="$errors->get('event_date')" class="mt-2" />

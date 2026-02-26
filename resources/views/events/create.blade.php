@@ -51,8 +51,9 @@
                                 <x-text-input 
                                     id="event_date" 
                                     name="event_date" 
-                                    type="date" 
-                                    class="mt-1 block w-full" 
+                                    type="text" 
+                                    class="mt-1 block w-full date-input" 
+                                    placeholder="dd/mm/yyyy"
                                     :value="old('event_date')" 
                                     required
                                 />

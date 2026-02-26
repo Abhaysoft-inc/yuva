@@ -6,7 +6,7 @@
     <style>
         @page {
             size: A4 portrait;
-            margin: 10mm 10mm;
+            margin: 15mm 15mm;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -16,8 +16,7 @@
         .card-container {
             width: 100%;
             background: #fff;
-            border: 2px solid #999;
-            margin-bottom: 10mm;
+            border: 3px solid #333;
         }
 
         /* Header Banner */
@@ -25,8 +24,8 @@
             background: #1e3a8a;
             color: #fff;
             text-align: center;
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 12px 15px;
+            font-size: 18px;
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -49,8 +48,8 @@
         }
 
         .details-table td {
-            padding: 3px 6px;
-            font-size: 10px;
+            padding: 5px 8px;
+            font-size: 13px;
             border: 1px solid #bbb;
             vertical-align: middle;
         }
@@ -60,7 +59,7 @@
             color: #111;
             white-space: nowrap;
             background: #f5f5f5;
-            width: 100px;
+            width: 120px;
         }
 
         .details-table td.value {
@@ -73,7 +72,7 @@
             color: #111;
             white-space: nowrap;
             background: #f5f5f5;
-            width: 95px;
+            width: 110px;
         }
 
         .details-table td.value2 {
@@ -83,45 +82,45 @@
 
         /* Photo */
         .photo-cell {
-            width: 120px;
+            width: 150px;
             border-left: 1px solid #bbb;
             text-align: center;
-            padding: 6px 5px;
+            padding: 8px 8px;
         }
 
         .photo-cell img {
-            width: 100px;
-            height: 120px;
+            width: 120px;
+            height: 140px;
             object-fit: cover;
             border: 2px solid #999;
         }
 
         .photo-placeholder {
-            width: 100px;
-            height: 120px;
+            width: 120px;
+            height: 140px;
             border: 2px solid #999;
             display: inline-block;
             background: #eee;
             text-align: center;
-            line-height: 120px;
-            font-size: 32px;
+            line-height: 140px;
+            font-size: 36px;
             font-weight: 700;
             color: #999;
         }
 
         .qr-code {
-            margin-top: 5px;
+            margin-top: 8px;
         }
 
         .qr-code img {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
         }
 
         /* Footer */
         .card-footer {
             border-top: 1px solid #bbb;
-            padding: 12px 10px 6px;
+            padding: 20px 15px 10px;
         }
 
         .footer-table {
@@ -129,7 +128,7 @@
         }
 
         .footer-table td {
-            font-size: 10px;
+            font-size: 12px;
             color: #555;
             font-weight: 600;
             vertical-align: bottom;
@@ -137,25 +136,19 @@
 
         .footer-left {
             border-top: 1px dashed #999;
-            padding-top: 3px;
+            padding-top: 4px;
             text-align: center;
-            width: 200px;
+            width: 220px;
         }
 
         .footer-right {
             text-align: right;
         }
-
-        .cut-line {
-            border-top: 1px dashed #999;
-            margin: 0;
-            height: 0;
-        }
     </style>
 </head>
 <body>
 
-@for($copy = 0; $copy < 2; $copy++)
+@for($copy = 0; $copy < 1; $copy++)
     <div class="card-container">
         {{-- Header --}}
         <div class="card-header">
@@ -250,10 +243,6 @@
             </table>
         </div>
     </div>
-
-    @if($copy === 0)
-        <div class="cut-line"></div>
-    @endif
 @endfor
 
 </body>

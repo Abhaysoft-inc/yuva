@@ -45,7 +45,7 @@
                                 </div>
                                 <div>
                                     <x-input-label for="date_of_formation" value="Date of Formation / गठन की तिथि" />
-                                    <x-text-input id="date_of_formation" name="date_of_formation" type="date" class="mt-1 block w-full" :value="old('date_of_formation')" />
+                                    <x-text-input id="date_of_formation" name="date_of_formation" type="text" class="mt-1 block w-full date-input" placeholder="dd/mm/yyyy" :value="old('date_of_formation')" />
                                     <x-input-error :messages="$errors->get('date_of_formation')" class="mt-2" />
                                 </div>
                                 <div>

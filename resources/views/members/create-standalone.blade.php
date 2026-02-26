@@ -72,7 +72,7 @@
                                 </div>
                                 <div>
                                     <x-input-label for="date_of_birth" value="Date of Birth / जन्म तिथि" />
-                                    <x-text-input id="date_of_birth" name="date_of_birth" type="date" class="mt-1 block w-full" :value="old('date_of_birth')" />
+                                    <x-text-input id="date_of_birth" name="date_of_birth" type="text" class="mt-1 block w-full date-input" placeholder="dd/mm/yyyy" :value="old('date_of_birth')" />
                                     <x-input-error :messages="$errors->get('date_of_birth')" class="mt-2" />
                                 </div>
                                 <div>

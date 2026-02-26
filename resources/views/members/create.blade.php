@@ -62,7 +62,7 @@
                                 </div>
                                 <div>
                                     <x-input-label for="date_of_birth" value="Date of Birth / जन्म तिथि" />
-                                    <x-text-input id="date_of_birth" name="date_of_birth" type="date" class="mt-1 block w-full" :value="old('date_of_birth')" />
+                                    <x-text-input id="date_of_birth" name="date_of_birth" type="text" class="mt-1 block w-full date-input" placeholder="dd/mm/yyyy" :value="old('date_of_birth')" />
                                     <x-input-error :messages="$errors->get('date_of_birth')" class="mt-2" />
                                 </div>
                                 <div>
@@ -137,12 +137,12 @@
                                 </div>
                                 <div>
                                     <x-input-label for="fd_start_date" value="FD Start Date / एफडी शुरू तिथि" />
-                                    <x-text-input id="fd_start_date" name="fd_start_date" type="date" class="mt-1 block w-full" :value="old('fd_start_date')" />
+                                    <x-text-input id="fd_start_date" name="fd_start_date" type="text" class="mt-1 block w-full date-input" placeholder="dd/mm/yyyy" :value="old('fd_start_date')" />
                                     <x-input-error :messages="$errors->get('fd_start_date')" class="mt-2" />
                                 </div>
                                 <div>
                                     <x-input-label for="fd_maturity_date" value="FD Maturity Date / एफडी परिपक्वता तिथि" />
-                                    <x-text-input id="fd_maturity_date" name="fd_maturity_date" type="date" class="mt-1 block w-full" :value="old('fd_maturity_date')" />
+                                    <x-text-input id="fd_maturity_date" name="fd_maturity_date" type="text" class="mt-1 block w-full date-input" placeholder="dd/mm/yyyy" :value="old('fd_maturity_date')" />
                                     <x-input-error :messages="$errors->get('fd_maturity_date')" class="mt-2" />
                                 </div>
                             </div>

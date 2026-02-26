@@ -16,7 +16,7 @@ class MemberController extends Controller
     {
         $members = $shg->members()
             ->orderByRaw("FIELD(role, 'president', 'secretary', 'treasurer', 'member') ASC")
-            ->latest()
+            ->oldest()
             ->paginate(15);
         return view('members.index', compact('shg', 'members'));
     }
@@ -55,8 +55,16 @@ class MemberController extends Controller
 
             'fd_amount' => 'nullable|numeric|min:0',
             'fd_interest_rate' => 'nullable|numeric|min:0|max:100',
-            'fd_start_date' => 'nullable|date',
-            'fd_maturity_date' => 'nullable|date|after_or_equal:fd_start_date',
+            'fd_start_date' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
+            'fd_maturity_date' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
 
             'passport_photo' => 'nullable|image|max:2048',
             'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
@@ -65,6 +73,8 @@ class MemberController extends Controller
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
+        $validated['fd_start_date'] = $this->normalizeDateInput($validated['fd_start_date'] ?? null);
+        $validated['fd_maturity_date'] = $this->normalizeDateInput($validated['fd_maturity_date'] ?? null);
 
         $validated['shg_id'] = $shg->id;
 
@@ -131,8 +141,16 @@ class MemberController extends Controller
 
             'fd_amount' => 'nullable|numeric|min:0',
             'fd_interest_rate' => 'nullable|numeric|min:0|max:100',
-            'fd_start_date' => 'nullable|date',
-            'fd_maturity_date' => 'nullable|date|after_or_equal:fd_start_date',
+            'fd_start_date' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
+            'fd_maturity_date' => ['nullable', 'string', function ($attribute, $value, $fail) {
+                if (!$this->isValidDateInput($value)) {
+                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
+                }
+            }],
 
             'passport_photo' => 'nullable|image|max:2048',
             'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
@@ -141,6 +159,8 @@ class MemberController extends Controller
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
+        $validated['fd_start_date'] = $this->normalizeDateInput($validated['fd_start_date'] ?? null);
+        $validated['fd_maturity_date'] = $this->normalizeDateInput($validated['fd_maturity_date'] ?? null);
 
         // Handle file uploads
         if ($request->hasFile('passport_photo')) {

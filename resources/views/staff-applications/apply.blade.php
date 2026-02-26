@@ -80,7 +80,7 @@
                             <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">
                                 Date of Birth
                             </label>
-                            <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                            <input type="text" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}" placeholder="dd/mm/yyyy" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 date-input">
                             @error('date_of_birth')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -307,5 +307,6 @@
         </div>
     </footer>
 
+<x-date-input-script />
 </body>
 </html>
