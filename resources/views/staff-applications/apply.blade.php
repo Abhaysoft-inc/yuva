@@ -268,6 +268,16 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <div>
+                            <label for="pcc_doc" class="block text-sm font-medium text-gray-700 mb-2">
+                                Police Character Certificate (PCC)
+                            </label>
+                            <input type="file" name="pcc_doc" id="pcc_doc" accept="image/*,.pdf" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                            @error('pcc_doc')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 

@@ -24,12 +24,12 @@
     <x-public-navbar />
 
     {{-- Hero Section --}}
-    <section class="bg-gradient-to-r from-[#1b6a3c] to-green-700 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="bg-gradient-to-r from-[#1b6a3c] to-green-700 py-6">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h1 class="text-4xl sm:text-5xl font-bold text-white mb-4">Make a Donation</h1>
-                <p class="text-xl text-green-100">दान करें</p>
-                <p class="text-green-100 mt-4 max-w-3xl mx-auto text-lg">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">Make a Donation</h1>
+                <p class="text-base text-green-100">दान करें</p>
+                <p class="text-green-100 mt-2 max-w-2xl mx-auto text-sm">
                     Your generous contribution helps us empower more communities and transform more lives
                 </p>
             </div>
@@ -37,126 +37,126 @@
     </section>
 
     {{-- Donation Form --}}
-    <section class="py-16 bg-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-8 bg-white">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Impact Info --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-orange-50 rounded-xl p-6 text-center">
-                    <div class="text-3xl font-bold text-orange-600 mb-2">₹500</div>
-                    <p class="text-gray-600 text-sm">Provides skill training to 1 woman</p>
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <div class="bg-orange-50 rounded-lg p-3 text-center">
+                    <div class="text-xl font-bold text-orange-600 mb-1">₹500</div>
+                    <p class="text-gray-600 text-xs">Skill training for 1 woman</p>
                 </div>
-                <div class="bg-green-50 rounded-xl p-6 text-center">
-                    <div class="text-3xl font-bold text-green-600 mb-2">₹2,000</div>
-                    <p class="text-gray-600 text-sm">Supports an SHG setup for one month</p>
+                <div class="bg-green-50 rounded-lg p-3 text-center">
+                    <div class="text-xl font-bold text-green-600 mb-1">₹2,000</div>
+                    <p class="text-gray-600 text-xs">SHG setup for one month</p>
                 </div>
-                <div class="bg-blue-50 rounded-xl p-6 text-center">
-                    <div class="text-3xl font-bold text-blue-600 mb-2">₹5,000</div>
-                    <p class="text-gray-600 text-sm">Funds micro-enterprise for one member</p>
+                <div class="bg-blue-50 rounded-lg p-3 text-center">
+                    <div class="text-xl font-bold text-blue-600 mb-1">₹5,000</div>
+                    <p class="text-gray-600 text-xs">Micro-enterprise for one member</p>
                 </div>
             </div>
 
             {{-- Donation Form --}}
-            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Donation Details</h2>
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-lg">
+                <h2 class="text-lg font-bold text-gray-900 mb-4">Donation Details</h2>
                 
                 <form id="donationForm" method="POST">
                     @csrf
                     
                     {{-- Quick Amount Selection --}}
-                    <div class="mb-8">
-                        <label class="block text-sm font-medium text-gray-700 mb-3">Select Amount *</label>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            <button type="button" onclick="selectAmount(500)" class="amount-btn px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Amount *</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button type="button" onclick="selectAmount(500)" class="amount-btn px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
                                 ₹500
                             </button>
-                            <button type="button" onclick="selectAmount(1000)" class="amount-btn px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
+                            <button type="button" onclick="selectAmount(1000)" class="amount-btn px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
                                 ₹1,000
                             </button>
-                            <button type="button" onclick="selectAmount(2000)" class="amount-btn px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
+                            <button type="button" onclick="selectAmount(2000)" class="amount-btn px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
                                 ₹2,000
                             </button>
-                            <button type="button" onclick="selectAmount(5000)" class="amount-btn px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
+                            <button type="button" onclick="selectAmount(5000)" class="amount-btn px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold hover:border-orange-500 hover:bg-orange-50 transition">
                                 ₹5,000
                             </button>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-2">
                             <input type="number" name="amount" id="amount" placeholder="Or enter custom amount" required min="1"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
                     </div>
 
                     {{-- Personal Details --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
-                            <label for="donor_name" class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <label for="donor_name" class="block text-xs font-medium text-gray-700 mb-1">Full Name *</label>
                             <input type="text" name="donor_name" id="donor_name" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <label for="email" class="block text-xs font-medium text-gray-700 mb-1">Email Address *</label>
                             <input type="email" name="email" id="email" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                            <label for="phone" class="block text-xs font-medium text-gray-700 mb-1">Phone Number *</label>
                             <input type="tel" name="phone" id="phone" required maxlength="15"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label for="pan_number" class="block text-sm font-medium text-gray-700 mb-2">
-                                PAN Number <span class="text-gray-500 text-xs">(For 80G Certificate)</span>
+                            <label for="pan_number" class="block text-xs font-medium text-gray-700 mb-1">
+                                PAN Number <span class="text-gray-500 text-xs">(For 80G)</span>
                             </label>
                             <input type="text" name="pan_number" id="pan_number" maxlength="10" style="text-transform: uppercase;"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
                     </div>
 
                     {{-- Address Details --}}
-                    <div class="mb-6">
-                        <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Address (Optional)</label>
+                    <div class="mb-4">
+                        <label for="address" class="block text-xs font-medium text-gray-700 mb-1">Address (Optional)</label>
                         <textarea name="address" id="address" rows="2"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="grid grid-cols-3 gap-4 mb-4">
                         <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                            <label for="city" class="block text-xs font-medium text-gray-700 mb-1">City</label>
                             <input type="text" name="city" id="city"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label for="state" class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                            <label for="state" class="block text-xs font-medium text-gray-700 mb-1">State</label>
                             <input type="text" name="state" id="state"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
 
                         <div>
-                            <label for="pincode" class="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
+                            <label for="pincode" class="block text-xs font-medium text-gray-700 mb-1">Pincode</label>
                             <input type="text" name="pincode" id="pincode" maxlength="6"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                         </div>
                     </div>
 
                     {{-- Message --}}
-                    <div class="mb-6">
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message (Optional)</label>
-                        <textarea name="message" id="message" rows="3" placeholder="Share why you're supporting us..."
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+                    <div class="mb-4">
+                        <label for="message" class="block text-xs font-medium text-gray-700 mb-1">Message (Optional)</label>
+                        <textarea name="message" id="message" rows="2" placeholder="Share why you're supporting us..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
                     </div>
 
                     {{-- Submit Button --}}
-                    <button type="submit" id="donateBtn" class="w-full px-6 py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition text-lg">
+                    <button type="submit" id="donateBtn" class="w-full px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition text-base">
                         Proceed to Payment
                     </button>
                 </form>
             </div>
 
             {{-- Security Info --}}
-            <div class="mt-8 text-center">
+            <div class="mt-5 text-center">
                 <div class="flex items-center justify-center gap-2 text-gray-600 mb-2">
                     <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />

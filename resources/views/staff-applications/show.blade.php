@@ -112,7 +112,7 @@
                     <div class="border rounded-lg p-4">
                         <h4 class="font-semibold text-gray-700 mb-3">Uploaded Documents</h4>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            @foreach(['passport_photo' => 'Photo', 'aadhar_card_doc' => 'Aadhar Card', 'pan_card_doc' => 'PAN Card', 'bank_passbook_doc' => 'Passbook'] as $field => $label)
+                            @foreach(['passport_photo' => 'Photo', 'aadhar_card_doc' => 'Aadhar Card', 'pan_card_doc' => 'PAN Card', 'bank_passbook_doc' => 'Passbook', 'pcc_doc' => 'Police Character Certificate'] as $field => $label)
                                 <div class="text-center">
                                     <p class="text-xs text-gray-500 mb-1">{{ $label }}</p>
                                     @if($staffApplication->$field)

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>FD Card — {{ $member->name }}</title>
     <style>
+        @page {
+            size: A4 portrait;
+            margin: 10mm 10mm;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +17,7 @@
             width: 100%;
             background: #fff;
             border: 2px solid #999;
+            margin-bottom: 10mm;
         }
 
         /* Header Banner */
@@ -20,10 +25,10 @@
             background: #1e3a8a;
             color: #fff;
             text-align: center;
-            padding: 12px 20px;
-            font-size: 18px;
+            padding: 8px 15px;
+            font-size: 14px;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
@@ -44,8 +49,8 @@
         }
 
         .details-table td {
-            padding: 6px 8px;
-            font-size: 12px;
+            padding: 3px 6px;
+            font-size: 10px;
             border: 1px solid #bbb;
             vertical-align: middle;
         }
@@ -55,7 +60,7 @@
             color: #111;
             white-space: nowrap;
             background: #f5f5f5;
-            width: 120px;
+            width: 100px;
         }
 
         .details-table td.value {
@@ -68,7 +73,7 @@
             color: #111;
             white-space: nowrap;
             background: #f5f5f5;
-            width: 110px;
+            width: 95px;
         }
 
         .details-table td.value2 {
@@ -78,45 +83,45 @@
 
         /* Photo */
         .photo-cell {
-            width: 160px;
+            width: 120px;
             border-left: 1px solid #bbb;
             text-align: center;
-            padding: 10px 8px;
+            padding: 6px 5px;
         }
 
         .photo-cell img {
-            width: 130px;
-            height: 155px;
+            width: 100px;
+            height: 120px;
             object-fit: cover;
             border: 2px solid #999;
         }
 
         .photo-placeholder {
-            width: 130px;
-            height: 155px;
+            width: 100px;
+            height: 120px;
             border: 2px solid #999;
             display: inline-block;
             background: #eee;
             text-align: center;
-            line-height: 155px;
-            font-size: 40px;
+            line-height: 120px;
+            font-size: 32px;
             font-weight: 700;
             color: #999;
         }
 
         .qr-code {
-            margin-top: 8px;
+            margin-top: 5px;
         }
 
         .qr-code img {
-            width: 100px;
-            height: 100px;
+            width: 70px;
+            height: 70px;
         }
 
         /* Footer */
         .card-footer {
             border-top: 1px solid #bbb;
-            padding: 18px 15px 10px;
+            padding: 12px 10px 6px;
         }
 
         .footer-table {
@@ -124,7 +129,7 @@
         }
 
         .footer-table td {
-            font-size: 12px;
+            font-size: 10px;
             color: #555;
             font-weight: 600;
             vertical-align: bottom;
@@ -132,18 +137,25 @@
 
         .footer-left {
             border-top: 1px dashed #999;
-            padding-top: 4px;
+            padding-top: 3px;
             text-align: center;
-            width: 250px;
+            width: 200px;
         }
 
         .footer-right {
             text-align: right;
         }
+
+        .cut-line {
+            border-top: 1px dashed #999;
+            margin: 0;
+            height: 0;
+        }
     </style>
 </head>
 <body>
 
+@for($copy = 0; $copy < 2; $copy++)
     <div class="card-container">
         {{-- Header --}}
         <div class="card-header">
@@ -161,11 +173,11 @@
                             <td class="value" colspan="3">{{ $shg->shg_code ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <td class="label">Member Name:</td>
+                            <td class="label">Member Name</td>
                             <td class="value" colspan="3">{{ $member->name }}</td>
                         </tr>
                         <tr>
-                            <td class="label">Father / Husband Name.</td>
+                            <td class="label">Father / Husband</td>
                             <td class="value" colspan="3">{{ strtoupper($member->husband_father_name ?? '-') }}</td>
                         </tr>
                         <tr>
@@ -197,18 +209,18 @@
                         <tr>
                             <td class="label">FD Start Date</td>
                             <td class="value">{{ $member->fd_start_date ? $member->fd_start_date->format('d/m/Y') : '-' }}</td>
-                            <td class="label2">FD Maturity Date</td>
+                            <td class="label2">Maturity Date</td>
                             <td class="value2">{{ $member->fd_maturity_date ? $member->fd_maturity_date->format('d/m/Y') : '-' }}</td>
                         </tr>
                         <tr>
-                            <td class="label">Maturity Amount</td>
+                            <td class="label">Maturity Amt</td>
                             <td class="value">Rs. {{ $member->fd_maturity_amount ? number_format($member->fd_maturity_amount, 2) : '0.00' }} — Auto</td>
-                            <td class="label2">Bank Name:</td>
+                            <td class="label2">Bank Name</td>
                             <td class="value2">{{ strtoupper($member->bank_name ?? '-') }}</td>
                         </tr>
                         <tr>
-                            <td class="label">Bank Name</td>
-                            <td class="value">{{ strtoupper($member->bank_name ?? '-') }}</td>
+                            <td class="label">Account No.</td>
+                            <td class="value">{{ $member->account_number ?? '-' }}</td>
                             <td class="label2">IFSC Code</td>
                             <td class="value2">{{ strtoupper($member->ifsc_code ?? '-') }}</td>
                         </tr>
@@ -238,6 +250,11 @@
             </table>
         </div>
     </div>
+
+    @if($copy === 0)
+        <div class="cut-line"></div>
+    @endif
+@endfor
 
 </body>
 </html>

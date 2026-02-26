@@ -44,6 +44,7 @@ class StaffApplicationController extends Controller
             'aadhar_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'pan_card_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
             'bank_passbook_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'pcc_doc' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
         $validated['date_of_birth'] = $this->normalizeDateInput($validated['date_of_birth'] ?? null);
@@ -60,6 +61,9 @@ class StaffApplicationController extends Controller
         }
         if ($request->hasFile('bank_passbook_doc')) {
             $validated['bank_passbook_doc'] = $request->file('bank_passbook_doc')->store('staff-docs', 'public');
+        }
+        if ($request->hasFile('pcc_doc')) {
+            $validated['pcc_doc'] = $request->file('pcc_doc')->store('staff-docs', 'public');
         }
 
         $validated['verification_status'] = 'pending';

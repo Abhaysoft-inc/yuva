@@ -30,6 +30,7 @@ class StaffApplication extends Model
         'aadhar_card_doc',
         'pan_card_doc',
         'bank_passbook_doc',
+        'pcc_doc',
 
         'verification_status',
         'valid_from',
