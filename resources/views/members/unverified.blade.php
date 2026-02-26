@@ -55,7 +55,7 @@
                                         {{ $member->mobile ?? 'N/A' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $member->created_at->format('d M, Y') }}
+                                        {{ $member->created_at->format('d/m/Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         {{-- View Details --}}
@@ -94,7 +94,7 @@
                                         <div class="grid grid-cols-2 gap-4">
                                             <div>
                                                 <h4 class="font-semibold text-gray-900 mb-2">Personal Information</h4>
-                                                <p class="text-sm"><strong>DOB:</strong> {{ $member->date_of_birth ? $member->date_of_birth->format('d M, Y') : 'N/A' }}</p>
+                                                <p class="text-sm"><strong>DOB:</strong> {{ $member->date_of_birth ? $member->date_of_birth->format('d/m/Y') : 'N/A' }}</p>
                                                 <p class="text-sm"><strong>Aadhar:</strong> {{ $member->aadhar_number ?? 'N/A' }}</p>
                                                 <p class="text-sm"><strong>PAN:</strong> {{ $member->pan_number ?? 'N/A' }}</p>
                                                 <p class="text-sm"><strong>Address:</strong> {{ $member->address ?? 'N/A' }}</p>

@@ -242,7 +242,7 @@
                     <strong>Receipt No: <span class="info-value-bold">{{ $donation->receipt_number }}</span></strong>
                 </div>
                 <div class="receipt-right">
-                    <strong>Date: <span class="info-value-bold">{{ $donation->paid_at->format('d-m-Y') }}</span></strong>
+                    <strong>Date: <span class="info-value-bold">{{ $donation->paid_at->format('d/m/Y') }}</span></strong>
                 </div>
             </div>
 
@@ -285,7 +285,7 @@
                 <div class="receipt-left">
                     <div class="info-row" style="margin-bottom: 0;">
                         <span class="info-label">Donation Date</span>
-                        <span class="info-value">: {{ $donation->paid_at->format('d-m-Y') }}</span>
+                        <span class="info-value">: {{ $donation->paid_at->format('d/m/Y') }}</span>
                     </div>
                     <div class="info-row" style="margin-bottom: 0;">
                         <span class="info-label">Date of Birth</span>

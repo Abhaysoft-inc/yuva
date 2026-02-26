@@ -55,7 +55,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Date:</span>
-                            <span class="font-semibold text-gray-900">{{ $donation->paid_at->format('d M Y, h:i A') }}</span>
+                            <span class="font-semibold text-gray-900">{{ $donation->paid_at->format('d/m/Y, h:i A') }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Payment ID:</span>

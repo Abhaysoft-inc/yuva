@@ -54,24 +54,13 @@
 
                 <div class="space-y-6">
                     <div>
-                        <label for="staff_id_code" class="block text-sm font-medium text-gray-700 mb-2">
-                            Staff ID / स्टाफ आईडी <span class="text-red-500">*</span>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address / ईमेल पता <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="staff_id_code" id="staff_id_code" value="{{ old('staff_id_code') }}" required 
-                            placeholder="e.g. YMF/STAFF/2026/0001"
+                        <input type="email" name="email" id="email" value="{{ old('email') }}" required 
+                            placeholder="e.g. saifuansari608@gmail.com"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                        @error('staff_id_code')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">
-                            Date of Birth / जन्म तिथि <span class="text-red-500">*</span>
-                        </label>
-                        <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}" required 
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                        @error('date_of_birth')
+                        @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -88,7 +77,7 @@
         {{-- Note --}}
         <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
             <p class="text-sm text-blue-800">
-                <strong>Note:</strong> Enter your Staff ID and Date of Birth to view and download your ID card. Only verified staff members can download their ID cards.
+                <strong>Note:</strong> Enter the email address you used during your staff application to view and download your ID card. Only verified staff members can download their ID cards.
             </p>
         </div>
     </div>

@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="ml-3">
                                     <p class="text-sm font-medium text-gray-900">Payment Completed</p>
-                                    <p class="text-xs text-gray-500">{{ $donation->paid_at->format('d M Y, h:i A') }}</p>
+                                    <p class="text-xs text-gray-500">{{ $donation->paid_at->format('d/m/Y, h:i A') }}</p>
                                 </div>
                             </div>
                             @endif
@@ -187,7 +187,7 @@
                                 </div>
                                 <div class="ml-3">
                                     <p class="text-sm font-medium text-gray-900">Donation Created</p>
-                                    <p class="text-xs text-gray-500">{{ $donation->created_at->format('d M Y, h:i A') }}</p>
+                                    <p class="text-xs text-gray-500">{{ $donation->created_at->format('d/m/Y, h:i A') }}</p>
                                 </div>
                             </div>
                         </div>

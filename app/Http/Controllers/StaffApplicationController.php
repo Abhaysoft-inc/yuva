@@ -127,8 +127,8 @@ class StaffApplicationController extends Controller
     public function idCardPdf(StaffApplication $staffApplication)
     {
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('staff-applications.id-card-pdf', compact('staffApplication'));
-        $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('staff-id-card-' . ($staffApplication->staff_id_code ?? $staffApplication->id) . '.pdf');
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->download('staff-id-card-' . str_replace(['/', '\\'], '-', $staffApplication->staff_id_code ?? $staffApplication->id) . '.pdf');
     }
 
     /**
@@ -140,30 +140,22 @@ class StaffApplicationController extends Controller
     }
 
     /**
-     * Public: search staff by ID + DOB and show ID card.
+     * Public: search staff by email and show ID card.
      */
     public function searchAndDownloadIdCard(Request $request)
     {
         $validated = $request->validate([
-            'staff_id_code' => 'required|string',
-            'date_of_birth' => ['required', 'string', function ($attribute, $value, $fail) {
-                if (!$this->isValidDateInput($value)) {
-                    $fail('The ' . str_replace('_', ' ', $attribute) . ' format is invalid.');
-                }
-            }],
+            'email' => 'required|email',
         ]);
 
-        $searchDate = $this->normalizeDateInput($validated['date_of_birth']);
-
-        $staffApplication = StaffApplication::where('staff_id_code', $validated['staff_id_code'])
+        $staffApplication = StaffApplication::where('email', $validated['email'])
             ->where('verification_status', 'verified')
-            ->whereDate('date_of_birth', $searchDate)
             ->first();
 
         if (!$staffApplication) {
             return redirect()->route('id-card.download')
                 ->withInput()
-                ->with('error', 'No verified staff member found with the provided Staff ID and Date of Birth. Please check and try again.');
+                ->with('error', 'No verified staff member found with the provided email address. Please check and try again.');
         }
 
         return view('staff-applications.id-card', compact('staffApplication'));

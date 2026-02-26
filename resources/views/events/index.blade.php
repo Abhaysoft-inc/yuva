@@ -46,7 +46,7 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <div>{{ $event->event_date->format('d M, Y') }}</div>
+                                            <div>{{ $event->event_date->format('d/m/Y') }}</div>
                                             @if($event->event_time)
                                                 <div class="text-xs text-gray-500">{{ date('g:i A', strtotime($event->event_time)) }}</div>
                                             @endif

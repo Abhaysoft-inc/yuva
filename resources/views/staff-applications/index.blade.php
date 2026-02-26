@@ -68,7 +68,7 @@
                                         {{ $app->designation ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $app->created_at->format('d M, Y') }}
+                                        {{ $app->created_at->format('d/m/Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($app->verification_status === 'verified')

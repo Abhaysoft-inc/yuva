@@ -133,7 +133,7 @@
             
             <div class="detail-row">
                 <span class="detail-label">Date:</span>
-                <span class="detail-value">{{ $donation->paid_at->format('d M Y, h:i A') }}</span>
+                <span class="detail-value">{{ $donation->paid_at->format('d/m/Y, h:i A') }}</span>
             </div>
             
             <div class="detail-row">
