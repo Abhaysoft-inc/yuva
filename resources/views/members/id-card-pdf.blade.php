@@ -182,6 +182,10 @@
                         </tr>
                         <tr>
                             <td class="label">Aadhar No.</td>
+                            <td class="value" colspan="3">{{ $member->aadhar_number ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Member ID</td>
                             <td class="value" colspan="3">{{ $member->member_id_code ?? '-' }}</td>
                         </tr>
                         <tr>
