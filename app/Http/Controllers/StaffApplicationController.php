@@ -100,15 +100,34 @@ class StaffApplicationController extends Controller
      */
     public function verify(StaffApplication $staffApplication)
     {
-        $staffApplication->update(['verification_status' => 'verified']);
+        $staffApplication->update([
+            'verification_status' => 'verified',
+            'valid_from' => now(),
+            'valid_to' => now()->addYear(),
+        ]);
 
         // Create a user account with staff role if one doesn't exist
         if (!$staffApplication->user) {
             $defaultPassword = 'staff@' . now()->year;
 
+            // Generate email if not provided (users table requires non-null unique email)
+            $email = $staffApplication->email;
+            if (empty($email)) {
+                $email = 'staff' . $staffApplication->id . '@yuvamaitree.org';
+            }
+
+            // Check for duplicate email and make unique if needed
+            $baseEmail = $email;
+            $counter = 1;
+            while (User::where('email', $email)->exists()) {
+                $parts = explode('@', $baseEmail);
+                $email = $parts[0] . $counter . '@' . $parts[1];
+                $counter++;
+            }
+
             User::create([
                 'name' => $staffApplication->name,
-                'email' => $staffApplication->email,
+                'email' => $email,
                 'password' => Hash::make($defaultPassword),
                 'role' => 'staff',
                 'staff_application_id' => $staffApplication->id,
