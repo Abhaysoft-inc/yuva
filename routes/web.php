@@ -11,12 +11,14 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DataManagementController;
+use App\Http\Controllers\StaffApplicationController;
 use App\Models\SHG;
 use App\Models\Member;
 use App\Models\Event;
 use App\Models\Slide;
 use App\Models\Director;
 use App\Models\Gallery;
+use App\Models\StaffApplication;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,20 +54,21 @@ Route::get('/donate/success/{id}', [DonationController::class, 'success'])->name
 Route::get('/donate/failed', [DonationController::class, 'failed'])->name('donation.failed');
 Route::get('/donate/receipt/{id}', [DonationController::class, 'downloadReceipt'])->name('donation.receipt');
 
-// Public member application form
-Route::get('/apply', [MemberController::class, 'showApplicationForm'])->name('apply');
-Route::post('/apply', [MemberController::class, 'submitApplication'])->name('apply.submit');
+// Public staff application form
+Route::get('/apply', [StaffApplicationController::class, 'showApplicationForm'])->name('apply');
+Route::post('/apply', [StaffApplicationController::class, 'submitApplication'])->name('apply.submit');
 
-// Public ID card download
-Route::get('/id-card-download', [MemberController::class, 'showIdCardDownloadForm'])->name('id-card.download');
-Route::post('/id-card-download', [MemberController::class, 'searchAndDownloadIdCard'])->name('id-card.search');
+// Public ID card download (staff)
+Route::get('/id-card-download', [StaffApplicationController::class, 'showIdCardDownloadForm'])->name('id-card.download');
+Route::post('/id-card-download', [StaffApplicationController::class, 'searchAndDownloadIdCard'])->name('id-card.search');
 
 Route::get('/dashboard', function () {
     $totalShgs = SHG::count();
     $totalMembers = Member::where('verification_status', 'verified')->count();
     $pendingMembers = Member::where('verification_status', 'pending')->count();
+    $pendingStaffApplications = StaffApplication::where('verification_status', 'pending')->count();
 
-    return view('dashboard', compact('totalShgs', 'totalMembers', 'pendingMembers'));
+    return view('dashboard', compact('totalShgs', 'totalMembers', 'pendingMembers', 'pendingStaffApplications'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -116,6 +119,14 @@ Route::middleware('auth')->group(function () {
 
         // Staff management
         Route::resource('staff', StaffController::class);
+
+        // Staff applications management
+        Route::get('staff-applications', [StaffApplicationController::class, 'index'])->name('staff-applications.index');
+        Route::get('staff-applications/{staffApplication}', [StaffApplicationController::class, 'show'])->name('staff-applications.show');
+        Route::post('staff-applications/{staffApplication}/verify', [StaffApplicationController::class, 'verify'])->name('staff-applications.verify');
+        Route::post('staff-applications/{staffApplication}/reject', [StaffApplicationController::class, 'reject'])->name('staff-applications.reject');
+        Route::get('staff-applications/{staffApplication}/id-card', [StaffApplicationController::class, 'idCard'])->name('staff-applications.id-card');
+        Route::get('staff-applications/{staffApplication}/id-card-pdf', [StaffApplicationController::class, 'idCardPdf'])->name('staff-applications.id-card.pdf');
 
         // Full exports / backup
         Route::get('exports/all-csv', [DataManagementController::class, 'exportAllCsvZip'])->name('exports.all.csv');

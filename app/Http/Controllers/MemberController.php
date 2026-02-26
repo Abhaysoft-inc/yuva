@@ -267,7 +267,7 @@ class MemberController extends Controller
         $member->load('shg');
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('members.id-card-pdf', compact('shg', 'member'));
         $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('fd-card-' . ($member->member_id_code ?? $member->id) . '.pdf');
+        return $pdf->download('fd-card-' . str_replace(['/', '\\'], '-', $member->member_id_code ?? $member->id) . '.pdf');
     }
 
     /**

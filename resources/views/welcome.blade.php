@@ -531,7 +531,7 @@
             <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Join Us in Making a Difference</h2>
             <p class="text-orange-100 text-lg mb-8">हमारे साथ जुड़ें और बदलाव लाएं</p>
            <a href="{{ url('/apply') }}" class="inline-block px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-50 transition text-lg">
-                    Become an Member
+                    Become a Staff Member
                 </a>
         </div>
     </section>
