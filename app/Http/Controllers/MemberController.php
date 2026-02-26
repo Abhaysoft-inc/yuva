@@ -285,9 +285,33 @@ class MemberController extends Controller
     public function fdCardPdf(SHG $shg, Member $member)
     {
         $member->load('shg');
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('members.id-card-pdf', compact('shg', 'member'));
+        $qrData = $member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '');
+        $qrBase64 = $this->generateQrBase64($qrData);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('members.id-card-pdf', compact('shg', 'member', 'qrBase64'));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->download('fd-card-' . str_replace(['/', '\\'], '-', $member->member_id_code ?? $member->id) . '.pdf');
+    }
+
+    /**
+     * Generate a QR code as a base64 data URI.
+     */
+    private function generateQrBase64(string $data, int $size = 200): string
+    {
+        try {
+            $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size($size)->generate($data);
+            return 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+        } catch (\Throwable $e) {
+            try {
+                $url = 'https://api.qrserver.com/v1/create-qr-code/?size=' . $size . 'x' . $size . '&data=' . urlencode($data);
+                $imageData = @file_get_contents($url);
+                if ($imageData) {
+                    return 'data:image/png;base64,' . base64_encode($imageData);
+                }
+            } catch (\Throwable $e2) {
+                // QR generation failed completely
+            }
+            return '';
+        }
     }
 
     /**

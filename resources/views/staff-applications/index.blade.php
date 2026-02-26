@@ -105,6 +105,15 @@
                                                 </button>
                                             </form>
                                         @endif
+
+                                        {{-- Delete --}}
+                                        <form method="POST" action="{{ route('staff-applications.destroy', $app) }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900 font-medium" onclick="return confirm('Permanently delete {{ $app->name }}\'s application? This cannot be undone.')">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach

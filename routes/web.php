@@ -125,6 +125,7 @@ Route::middleware('auth')->group(function () {
         Route::get('staff-applications/{staffApplication}', [StaffApplicationController::class, 'show'])->name('staff-applications.show');
         Route::post('staff-applications/{staffApplication}/verify', [StaffApplicationController::class, 'verify'])->name('staff-applications.verify');
         Route::post('staff-applications/{staffApplication}/reject', [StaffApplicationController::class, 'reject'])->name('staff-applications.reject');
+        Route::delete('staff-applications/{staffApplication}', [StaffApplicationController::class, 'destroy'])->name('staff-applications.destroy');
         Route::get('staff-applications/{staffApplication}/id-card', [StaffApplicationController::class, 'idCard'])->name('staff-applications.id-card');
         Route::get('staff-applications/{staffApplication}/id-card-pdf', [StaffApplicationController::class, 'idCardPdf'])->name('staff-applications.id-card.pdf');
 

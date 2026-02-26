@@ -227,12 +227,9 @@
                     @endif
 
                     <div class="qr-code">
-                        @php
-                            $qrData = $member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '');
-                            $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size(200)->generate($qrData);
-                            $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
-                        @endphp
-                        <img src="{{ $qrBase64 }}" alt="QR">
+                        @if(!empty($qrBase64))
+                            <img src="{{ $qrBase64 }}" alt="QR">
+                        @endif
                     </div>
                 </td>
             </tr>

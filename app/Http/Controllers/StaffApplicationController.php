@@ -153,6 +153,29 @@ class StaffApplicationController extends Controller
     }
 
     /**
+     * Admin: delete a staff application.
+     */
+    public function destroy(StaffApplication $staffApplication)
+    {
+        // Delete linked user account if one exists
+        if ($staffApplication->user) {
+            $staffApplication->user->delete();
+        }
+
+        // Delete uploaded files
+        $fileFields = ['passport_photo', 'aadhar_card_doc', 'pan_card_doc', 'bank_passbook_doc', 'pcc_doc'];
+        foreach ($fileFields as $field) {
+            if ($staffApplication->$field) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($staffApplication->$field);
+            }
+        }
+
+        $staffApplication->delete();
+
+        return redirect()->route('staff-applications.index')->with('success', 'Staff application deleted successfully.');
+    }
+
+    /**
      * Display staff ID card in browser.
      */
     public function idCard(StaffApplication $staffApplication)
@@ -165,9 +188,33 @@ class StaffApplicationController extends Controller
      */
     public function idCardPdf(StaffApplication $staffApplication)
     {
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('staff-applications.id-card-pdf', compact('staffApplication'));
+        $qrData = $staffApplication->staff_id_code . ' | ' . $staffApplication->name . ' | STAFF | ' . ($staffApplication->mobile ?? '');
+        $qrBase64 = $this->generateQrBase64($qrData);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('staff-applications.id-card-pdf', compact('staffApplication', 'qrBase64'));
         $pdf->setPaper('A4', 'portrait');
         return $pdf->download('staff-id-card-' . str_replace(['/', '\\'], '-', $staffApplication->staff_id_code ?? $staffApplication->id) . '.pdf');
+    }
+
+    /**
+     * Generate a QR code as a base64 data URI.
+     */
+    private function generateQrBase64(string $data, int $size = 200): string
+    {
+        try {
+            $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size($size)->generate($data);
+            return 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+        } catch (\Throwable $e) {
+            try {
+                $url = 'https://api.qrserver.com/v1/create-qr-code/?size=' . $size . 'x' . $size . '&data=' . urlencode($data);
+                $imageData = @file_get_contents($url);
+                if ($imageData) {
+                    return 'data:image/png;base64,' . base64_encode($imageData);
+                }
+            } catch (\Throwable $e2) {
+                // QR generation failed completely
+            }
+            return '';
+        }
     }
 
     /**

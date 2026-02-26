@@ -27,6 +27,14 @@
                     </form>
                 @endif
 
+                <form method="POST" action="{{ route('staff-applications.destroy', $staffApplication) }}" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 transition" onclick="return confirm('Are you sure you want to permanently delete this application? This action cannot be undone.')">
+                        Delete
+                    </button>
+                </form>
+
                 <a href="{{ route('staff-applications.index') }}"
                    class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition">
                     Back
@@ -111,15 +119,20 @@
                     {{-- Documents --}}
                     <div class="border rounded-lg p-4">
                         <h4 class="font-semibold text-gray-700 mb-3">Uploaded Documents</h4>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            @foreach(['passport_photo' => 'Photo', 'aadhar_card_doc' => 'Aadhar Card', 'pan_card_doc' => 'PAN Card', 'bank_passbook_doc' => 'Passbook', 'pcc_doc' => 'Police Character Certificate'] as $field => $label)
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            @foreach(['passport_photo' => 'Photo', 'aadhar_card_doc' => 'Aadhar Card', 'pan_card_doc' => 'PAN Card', 'bank_passbook_doc' => 'Passbook', 'pcc_doc' => 'PCC'] as $field => $label)
                                 <div class="text-center">
                                     <p class="text-xs text-gray-500 mb-1">{{ $label }}</p>
                                     @if($staffApplication->$field)
                                         @if(in_array(pathinfo($staffApplication->$field, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                                            <img src="{{ asset('storage/' . $staffApplication->$field) }}" class="w-full h-20 object-cover rounded border" alt="{{ $label }}">
+                                            <a href="{{ asset('storage/' . $staffApplication->$field) }}" target="_blank" title="Click to view full size">
+                                                <img src="{{ asset('storage/' . $staffApplication->$field) }}" class="w-full h-20 object-cover rounded border hover:opacity-75 transition cursor-pointer" alt="{{ $label }}">
+                                            </a>
                                         @else
-                                            <a href="{{ asset('storage/' . $staffApplication->$field) }}" target="_blank" class="text-indigo-600 hover:underline text-xs">View PDF</a>
+                                            <a href="{{ asset('storage/' . $staffApplication->$field) }}" target="_blank" class="inline-flex items-center px-3 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded border text-xs font-medium transition">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                View PDF
+                                            </a>
                                         @endif
                                     @else
                                         <span class="text-xs text-gray-400">Not uploaded</span>

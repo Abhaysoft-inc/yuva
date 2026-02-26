@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FD Card — {{ $member->name }}</title>
     <style>
+        @page {
+            size: A4 portrait;
+            margin: 15mm 15mm;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, 'Segoe UI', sans-serif;
+            font-family: Arial, sans-serif;
             background: #f3f4f6;
             padding: 20px;
         }
@@ -35,43 +39,38 @@
         .btn-back { background: #6b7280; color: #fff; }
         .btn-back:hover { background: #4b5563; }
 
-        .card-container {
+        .card-wrapper {
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        .card-container {
+            width: 100%;
             background: #fff;
-            border: 2px solid #ccc;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 3px solid #333;
         }
 
         /* Header Banner */
         .card-header {
-            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            background: #1e3a8a;
             color: #fff;
             text-align: center;
-            padding: 14px 20px;
-            font-size: 20px;
+            padding: 12px 15px;
+            font-size: 18px;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        /* Main Content Area */
-        .card-body {
-            display: table;
+        /* Main table */
+        .main-table {
             width: 100%;
+            border-collapse: collapse;
         }
 
-        .card-left {
-            display: table-cell;
+        .main-table > tbody > tr > td,
+        .main-table > tr > td {
             vertical-align: top;
-        }
-
-        .card-right {
-            display: table-cell;
-            vertical-align: top;
-            width: 175px;
-            border-left: 1px solid #bbb;
         }
 
         /* Details Table */
@@ -81,8 +80,8 @@
         }
 
         .details-table td {
-            padding: 7px 10px;
-            font-size: 13.5px;
+            padding: 5px 8px;
+            font-size: 13px;
             border: 1px solid #bbb;
             vertical-align: middle;
         }
@@ -92,7 +91,7 @@
             color: #111;
             white-space: nowrap;
             background: #f5f5f5;
-            width: 140px;
+            width: 120px;
         }
 
         .details-table td.value {
@@ -105,7 +104,7 @@
             color: #111;
             white-space: nowrap;
             background: #f5f5f5;
-            width: 130px;
+            width: 110px;
         }
 
         .details-table td.value2 {
@@ -114,95 +113,79 @@
         }
 
         /* Photo */
-        .photo-section {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .photo-frame {
+        .photo-cell {
             width: 150px;
-            height: 170px;
-            margin: 0 auto;
-            border: 2px solid #999;
-            overflow: hidden;
-            background: #f3f4f6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-frame .placeholder {
-            font-size: 48px;
-            font-weight: 700;
-            color: #9ca3af;
-        }
-
-        /* QR Code */
-        .qr-section {
-            padding: 8px 10px;
+            border-left: 1px solid #bbb;
             text-align: center;
+            padding: 8px 8px;
         }
 
-        .qr-frame {
-            width: 110px;
-            height: 110px;
-            margin: 0 auto;
+        .photo-cell img {
+            width: 120px;
+            height: 140px;
+            object-fit: cover;
+            border: 2px solid #999;
         }
 
-        .qr-frame img {
-            width: 100%;
-            height: 100%;
+        .photo-placeholder {
+            width: 120px;
+            height: 140px;
+            border: 2px solid #999;
+            display: inline-block;
+            background: #eee;
+            text-align: center;
+            line-height: 140px;
+            font-size: 36px;
+            font-weight: 700;
+            color: #999;
+        }
+
+        .qr-code {
+            margin-top: 8px;
+        }
+
+        .qr-code img {
+            width: 80px;
+            height: 80px;
         }
 
         /* Footer */
         .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 20px 20px 12px;
             border-top: 1px solid #bbb;
-            min-height: 70px;
+            padding: 20px 15px 10px;
         }
 
-        .signature-area {
-            font-size: 13px;
+        .footer-table {
+            width: 100%;
+        }
+
+        .footer-table td {
+            font-size: 12px;
             color: #555;
             font-weight: 600;
+            vertical-align: bottom;
+        }
+
+        .footer-left {
             border-top: 1px dashed #999;
-            padding-top: 6px;
-            min-width: 260px;
+            padding-top: 4px;
             text-align: center;
+            width: 220px;
         }
 
-        .office-area {
-            font-size: 13px;
-            color: #555;
-            font-weight: 600;
+        .footer-right {
             text-align: right;
         }
 
         /* Print Styles */
         @media print {
-            body { background: #fff; padding: 10px; margin: 0; }
+            body { background: #fff; padding: 0; margin: 0; }
             .print-controls { display: none !important; }
+            .card-wrapper { max-width: 100%; }
             .card-container {
-                box-shadow: none;
-                border: 1px solid #999;
-                max-width: 100%;
                 print-color-adjust: exact;
                 -webkit-print-color-adjust: exact;
             }
-        }
-
-        @page {
-            size: A4 landscape;
-            margin: 15mm;
         }
     </style>
 </head>
@@ -214,102 +197,99 @@
         <a href="{{ route('shgs.members.show', [$shg, $member]) }}" class="btn-back">← Back to Member</a>
     </div>
 
-    <div class="card-container">
-        {{-- Header --}}
-        <div class="card-header">
-            {{ strtoupper($shg->shg_name ?? 'YUVA MAITREE FOUNDATION') }}
-        </div>
-
-        {{-- Body --}}
-        <div class="card-body">
-            {{-- Left: Details Table --}}
-            <div class="card-left">
-                <table class="details-table">
-                    <tr>
-                        <td class="label">SHG Group Code</td>
-                        <td class="value" colspan="3">{{ $shg->shg_code ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Member Name:</td>
-                        <td class="value" colspan="3">{{ $member->name }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Father / Husband<br>Name.</td>
-                        <td class="value" colspan="3">{{ strtoupper($member->husband_father_name ?? '-') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Address</td>
-                        <td class="value" colspan="3">{{ strtoupper($member->address ?? '-') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Contact No.</td>
-                        <td class="value" colspan="3">{{ $member->mobile ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">PAN No.</td>
-                        <td class="value" colspan="3">{{ strtoupper($member->pan_number ?? '-') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Aadhar No.</td>
-                        <td class="value" colspan="3">{{ $member->aadhar_number ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Member ID</td>
-                        <td class="value" colspan="3">{{ $member->member_id_code ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">FD Amount</td>
-                        <td class="value">Rs. {{ $member->fd_amount ? number_format($member->fd_amount, 0) : '0' }} — Auto</td>
-                        <td class="label2">Interest Rate</td>
-                        <td class="value2">{{ $member->fd_interest_rate ?? '12' }}% p.a.</td>
-                    </tr>
-                    <tr>
-                        <td class="label">FD Start Date</td>
-                        <td class="value">{{ $member->fd_start_date ? $member->fd_start_date->format('d/m/Y') : '-' }}</td>
-                        <td class="label2">FD Maturity Date</td>
-                        <td class="value2">{{ $member->fd_maturity_date ? $member->fd_maturity_date->format('d/m/Y') : '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Maturity Amount</td>
-                        <td class="value">Rs. {{ $member->fd_maturity_amount ? number_format($member->fd_maturity_amount, 2) : '0.00' }} — Auto</td>
-                        <td class="label2">Bank Name:</td>
-                        <td class="value2">{{ strtoupper($member->bank_name ?? '-') }}</td>
-                    </tr>
-                    <tr>
-                        <td class="label">Bank Name</td>
-                        <td class="value">{{ strtoupper($member->bank_name ?? '-') }}</td>
-                        <td class="label2">IFSC Code</td>
-                        <td class="value2">{{ strtoupper($member->ifsc_code ?? '-') }}</td>
-                    </tr>
-                </table>
+    <div class="card-wrapper">
+        <div class="card-container">
+            {{-- Header --}}
+            <div class="card-header">
+                {{ strtoupper($shg->shg_name ?? 'YUVA MAITREE FOUNDATION') }}
             </div>
 
-            {{-- Right: Photo + QR --}}
-            <div class="card-right">
-                <div class="photo-section">
-                    <div class="photo-frame">
+            {{-- Body: use table for layout consistency with PDF --}}
+            <table class="main-table">
+                <tr>
+                    <td>
+                        {{-- Details Table --}}
+                        <table class="details-table">
+                            <tr>
+                                <td class="label">SHG Group Code</td>
+                                <td class="value" colspan="3">{{ $shg->shg_code ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Member Name</td>
+                                <td class="value" colspan="3">{{ $member->name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Father / Husband</td>
+                                <td class="value" colspan="3">{{ strtoupper($member->husband_father_name ?? '-') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Address</td>
+                                <td class="value" colspan="3">{{ strtoupper($member->address ?? '-') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Contact No.</td>
+                                <td class="value" colspan="3">{{ $member->mobile ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">PAN No.</td>
+                                <td class="value" colspan="3">{{ strtoupper($member->pan_number ?? '-') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Aadhar No.</td>
+                                <td class="value" colspan="3">{{ $member->aadhar_number ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Member ID</td>
+                                <td class="value" colspan="3">{{ $member->member_id_code ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">FD Amount</td>
+                                <td class="value">Rs. {{ $member->fd_amount ? number_format($member->fd_amount, 0) : '0' }} — Auto</td>
+                                <td class="label2">Interest Rate</td>
+                                <td class="value2">{{ $member->fd_interest_rate ?? '12' }}% p.a.</td>
+                            </tr>
+                            <tr>
+                                <td class="label">FD Start Date</td>
+                                <td class="value">{{ $member->fd_start_date ? $member->fd_start_date->format('d/m/Y') : '-' }}</td>
+                                <td class="label2">Maturity Date</td>
+                                <td class="value2">{{ $member->fd_maturity_date ? $member->fd_maturity_date->format('d/m/Y') : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Maturity Amt</td>
+                                <td class="value">Rs. {{ $member->fd_maturity_amount ? number_format($member->fd_maturity_amount, 2) : '0.00' }} — Auto</td>
+                                <td class="label2">Bank Name</td>
+                                <td class="value2">{{ strtoupper($member->bank_name ?? '-') }}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Account No.</td>
+                                <td class="value">{{ $member->account_number ?? '-' }}</td>
+                                <td class="label2">IFSC Code</td>
+                                <td class="value2">{{ strtoupper($member->ifsc_code ?? '-') }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="photo-cell">
                         @if($member->passport_photo)
                             <img src="{{ asset('storage/' . $member->passport_photo) }}" alt="{{ $member->name }}">
                         @else
-                            <div class="placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
+                            <div class="photo-placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
                         @endif
-                    </div>
-                </div>
-                <div class="qr-section">
-                    <div class="qr-frame">
-                        {!! \SimpleSoftwareIo\QrCode\Facades\QrCode::size(200)->generate($member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '')) !!}
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        {{-- Footer --}}
-        <div class="card-footer">
-            <div class="signature-area">
-                Member Signature / Thumb Impression
-            </div>
-            <div class="office-area">
-                For Office Use Only
+                        <div class="qr-code">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($member->member_id_code . ' | ' . $member->name . ' | ' . ($shg->shg_name ?? '') . ' | ' . ($member->mobile ?? '')) }}" alt="QR Code">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            {{-- Footer --}}
+            <div class="card-footer">
+                <table class="footer-table">
+                    <tr>
+                        <td class="footer-left">Member Signature / Thumb Impression</td>
+                        <td class="footer-right">For Office Use Only</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

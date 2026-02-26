@@ -330,6 +330,18 @@ class DonationController extends Controller
             $qrSvg = \SimpleSoftwareIo\QrCode\Facades\QrCode::format('svg')->size(180)->generate($data);
             return 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
         } catch (\Throwable $e) {
+            // Fallback: use external QR API
+            try {
+                $url = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . urlencode($data);
+                $imageData = @file_get_contents($url);
+                if ($imageData) {
+                    return 'data:image/png;base64,' . base64_encode($imageData);
+                }
+            } catch (\Throwable $e2) {
+                Log::warning('QR generation fallback also failed.', [
+                    'message' => $e2->getMessage(),
+                ]);
+            }
             Log::warning('QR generation failed.', [
                 'message' => $e->getMessage(),
             ]);
