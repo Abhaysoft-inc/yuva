@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +51,24 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // Block staff login outside allowed timing
+        $user = Auth::user();
+        if ($user && $user->isStaff() && !$user->isAdmin() && Setting::get('staff_timing_enabled', '0') === '1') {
+            $now = Carbon::now('Asia/Kolkata');
+            $openingTime = Carbon::createFromFormat('H:i', Setting::get('staff_opening_time', '09:00'), 'Asia/Kolkata');
+            $closingTime = Carbon::createFromFormat('H:i', Setting::get('staff_closing_time', '18:00'), 'Asia/Kolkata');
+
+            if ($now->lt($openingTime) || $now->gte($closingTime)) {
+                Auth::guard('web')->logout();
+                $this->session()->invalidate();
+                $this->session()->regenerateToken();
+
+                throw ValidationException::withMessages([
+                    'email' => 'Staff login is only allowed between ' . $openingTime->format('h:i A') . ' and ' . $closingTime->format('h:i A') . '.',
+                ]);
+            }
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -80,6 +100,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
     }
 }

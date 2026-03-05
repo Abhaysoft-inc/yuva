@@ -58,4 +58,35 @@ class SettingController extends Controller
 
         return redirect()->route('settings.appearance')->with('success', 'Sidebar color updated successfully!');
     }
+
+    /**
+     * Show the staff access timing settings form.
+     */
+    public function staffTiming()
+    {
+        $timing = [
+            'enabled' => Setting::get('staff_timing_enabled', '0'),
+            'opening_time' => Setting::get('staff_opening_time', '09:00'),
+            'closing_time' => Setting::get('staff_closing_time', '18:00'),
+        ];
+        return view('settings.staff-timing', compact('timing'));
+    }
+
+    /**
+     * Update staff access timing settings.
+     */
+    public function updateStaffTiming(Request $request)
+    {
+        $validated = $request->validate([
+            'enabled' => 'required|in:0,1',
+            'opening_time' => 'required|date_format:H:i',
+            'closing_time' => 'required|date_format:H:i|after:opening_time',
+        ]);
+
+        Setting::set('staff_timing_enabled', $validated['enabled']);
+        Setting::set('staff_opening_time', $validated['opening_time']);
+        Setting::set('staff_closing_time', $validated['closing_time']);
+
+        return redirect()->route('settings.staff-timing')->with('success', 'Staff access timing updated successfully!');
+    }
 }
