@@ -10,6 +10,13 @@
     .sidebar-active { background-color: rgba(255,255,255,0.2); }
     .sidebar-divider { border-color: rgba(255,255,255,0.2); }
     [x-cloak] { display: none !important; }
+
+    /* Sidebar scrollbar */
+    .sidebar-scroll::-webkit-scrollbar { width: 6px; }
+    .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 3px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+    .sidebar-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.25) transparent; }
 </style>
 
 <div x-data="{ sidebarOpen: false }" class="relative">
@@ -43,7 +50,7 @@
            x-transition:leave="transition ease-in-out duration-300 transform"
            x-transition:leave-start="translate-x-0"
            x-transition:leave-end="-translate-x-full"
-           class="w-64 sidebar-bg min-h-screen fixed left-0 top-0 overflow-y-auto z-50 lg:translate-x-0 lg:block"
+           class="w-64 sidebar-bg h-screen fixed left-0 top-0 overflow-y-auto sidebar-scroll z-50 lg:translate-x-0 lg:block"
            style="display: none;"
            x-cloak>
         <div class="p-4">
@@ -173,7 +180,7 @@
     </aside>
 
     {{-- Desktop Sidebar (always visible on large screens) --}}
-    <aside class="hidden lg:block w-64 sidebar-bg min-h-screen fixed left-0 top-0 overflow-y-auto z-40">
+    <aside class="hidden lg:block w-64 sidebar-bg h-screen fixed left-0 top-0 overflow-y-auto sidebar-scroll z-40">
         <div class="p-4">
             {{-- Logo/Brand --}}
             <div class="mb-8 text-center">
